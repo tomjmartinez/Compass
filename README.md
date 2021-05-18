@@ -18,19 +18,19 @@ git pushing?
 
 ### User Stories ###
 gifter:
--[ ] user can create account
--[ ] user can choose a place on map and start a geocache
--[ ] can set your own custom rules 
--[ ] custom rule: amt of seeker given an opporunity to seek it (optional)
--[ ] mystery or text description (picture) option
+([ ]) user can create account
+([ ]) user can choose a place on map and start a geocache
+([ ]) can set your own custom rules 
+([ ]) custom rule: amt of seeker given an opporunity to seek it (optional)
+([ ]) mystery or text description (picture) option
 
 seeker:
--[ ] can look up available caches and select one at time
--[ ] updates found cache
--[ ] can post picture of item found
+([ ]) can look up available caches and select one at time
+([ ]) updates found cache
+([ ]) can post picture of item found
 
 admin-reviewer:
--[ ] approve/deny caches if they are safely located.
+([ ]) approve/deny caches if they are safely located.
 
 
 ## Features
