@@ -26,7 +26,8 @@ public class Project2BackendApplication {
 	@Bean
 	public CommandLineRunner runner() {
 		return a -> {
-			GeoCache geoCache1 = geoCacheRepo.findById(new ObjectId("609")).orElse(null);
+			GeoCache geoCache1 = geoCacheRepo.findById(new ObjectId("60a58d0cbf60f52c36a12bf5")).orElse(null);
+			System.out.println(geoCache1);
 		};
 	}
 
