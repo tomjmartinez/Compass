@@ -2,6 +2,7 @@ package com.example.Project2;
 
 import com.example.Project2.models.GeoCache;
 import com.example.Project2.models.GeoCacheRepo;
+import org.bson.types.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,11 +12,11 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class Project2BackendApplication {
 
-	private GeoCache geoCache;
+	private GeoCacheRepo geoCacheRepo;
 
 	@Autowired
-	public Project2BackendApplication(GeoCache geoCache) {
-		this.geoCache = geoCache;
+	public Project2BackendApplication(GeoCacheRepo geoCacheRepo) {
+		this.geoCacheRepo = geoCacheRepo;
 	}
 
 	public static void main(String[] args) {
@@ -23,9 +24,9 @@ public class Project2BackendApplication {
 	}
 
 	@Bean
-	public CommandLineRunner() {
+	public CommandLineRunner runner() {
 		return a -> {
-			GeoCache geoCache1 = GeoCacheRepo.findById(new ObjectId("")).orElse(null);
+			GeoCache geoCache1 = geoCacheRepo.findById(new ObjectId("609")).orElse(null);
 		};
 	}
 
