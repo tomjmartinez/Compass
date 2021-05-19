@@ -18,6 +18,7 @@ public class GeoCache {
     String reviewer;
     boolean approved;
     String finder;
+    boolean found;
     long timeLimit;
 
 }
