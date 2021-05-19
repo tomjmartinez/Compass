@@ -6,3 +6,66 @@
 Project2_Backend/.idea
 Project2_Backend/*.iml
 Project2_Backend/.idea
+
+### Back End Ignore ###
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+Project2_Backend/nbproject/private/
+Project2_Backend/nbbuild/
+Project2_Backend/dist/
+Project2_Backend/nbdist/
+Project2_Backend/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### Frontend Ignore ###
+
+# dependencies
+compass-frontend/node_modules
+compass-frontend/.pnp
+.pnp.js
+
+# testing
+compass-frontend/coverage
+
+# production
+compass-frontend/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
