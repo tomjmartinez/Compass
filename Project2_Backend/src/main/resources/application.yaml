@@ -1,0 +1,8 @@
+data:
+    spring:
+        mongodb:
+            authentication-database: compass
+            user: compass.user
+            password: developmentpassword
+            database: compass
+            uri: mongodb://localhost:27017/compass
