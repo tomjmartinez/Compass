@@ -1,1 +1,8 @@
 .DS_Store
+.gradle
+*.iml
+.idea
+
+Project2_Backend/.idea
+Project2_Backend/*.iml
+Project2_Backend/.idea
