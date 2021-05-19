@@ -1,0 +1,32 @@
+.createAccount{
+    width: 100vw;
+    height: 50vh;
+    align-content: center;
+    justify-content: center;
+    max-width: 200px;
+    padding-left: 50px;
+    padding-right: 30px;
+    margin: auto;
+    box-shadow: 2px 2px 2px #000000;
+    background-color: #FFFFFF;
+    font-size: 20px;
+    font-family: "Noto Sans",sans-serif;
+}
+
+.accountRows{
+    margin-top: 20px;
+    padding-top: 20px;
+}
+
+
+#btnCreateAccount{
+    font-size: 20px;
+    border-style: double;
+    align-items: center;
+    justify-content: center;
+}
+
+#btnCreateAccount:hover{
+    background-color: #faf884;
+    cursor: pointer;
+}
