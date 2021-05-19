@@ -1,8 +1,5 @@
-data:
-    spring:
+spring:
+    data:
         mongodb:
-            authentication-database: compass
-            user: compass.user
-            password: developmentpassword
+            uri: mongodb+srv://user:uqVZ2SEpjEx7d8k@cluster0.32jir.mongodb.net/compass?retryWrites=true&w=majority
             database: compass
-            uri: mongodb://localhost:27017/compass
