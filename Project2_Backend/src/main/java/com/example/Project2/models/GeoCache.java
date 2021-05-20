@@ -6,9 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Arrays;
 
-/**Class represents
- * @author: Tomas J. Martinez
- */
 @Document(collection="geocaches")
 public class GeoCache {
     @Id
