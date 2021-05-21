@@ -65,8 +65,6 @@ class MapComponent extends Component {
 
     this.setState(previousState => {
       return {
-        currentLat: lat,
-        currentLng: lng,
         markers: [
           ...previousState.markers,
           {
