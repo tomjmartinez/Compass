@@ -22,7 +22,8 @@ class CurrentLocation extends React.Component{
       currentLocation: {
         lat: lat,
         lng: lng
-      }
+      },
+      markers: [],
     };
   }
 
@@ -92,9 +93,29 @@ class CurrentLocation extends React.Component{
     }
   }
 
+  onClick(t, map, coord) {
+    const { latLng } = coord;
+    const lat = latLng.lat();
+    const lng = latLng.lng();
+
+    this.setState(previousState => {
+      return {
+        markers: [
+          ...previousState.markers,
+          {
+            title: "",
+            name: "",
+            position: { lat, lng }
+          }
+        ]
+      };
+    });
+    console.log(this.state.markers);
+  }
+
+
   renderChildren() {
     const { children } = this.props;
-
     if (!children) return;
 
     return React.Children.map(children, c => {

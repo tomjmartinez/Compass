@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
 import CurrentLocation from './CurrentLocationComponent';
@@ -30,7 +30,30 @@ class MapComponent extends Component {
     this.onClick = this.onClick.bind(this);
   }
 
+  componentDidMount() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.setState(previousState => {
+          return {
+            markers: [
+              {
+                title: "Current Location",
+                name: "Current Location",
+                position: { lat: position.coords.latitude, lng: position.coords.longitude }
+              }
+            ]
+          };
+        });
+      });
+    }
+  }
+
+  onLoad() {
+    console.log("test");
+  }
+
   onClick(t, map, coord) {
+    console.log(this.state.markers);
     const { latLng } = coord;
     const lat = latLng.lat();
     const lng = latLng.lng();
@@ -68,29 +91,13 @@ class MapComponent extends Component {
     }
   };
 
-  // <Map
-  //         google={this.props.google}
-  //         style={{ width: "80%", margin: "auto" }}
-  //         className={"map"}
-  //         zoom={14}
-  //         onClick={this.onClick}
-  //       >
-  //         {this.state.markers.map((marker, index) => (
-  //           <Marker
-  //             key={index}
-  //             title={marker.title}
-  //             name={marker.name}
-  //             position={marker.position}
-  //           />
-  //         ))}
-  //       </Map>
-
   render() {
     return (
       <Map
         google={this.props.google}
         zoom={14}
         className={"map"}
+        center={{ lat: this.state.markers[0].lat, lng: this.state.markers[0].lng }}
         style={mapStyles}
         onClick={this.onClick}
       >
@@ -115,27 +122,6 @@ class MapComponent extends Component {
       </Map>
     );
   }
-
-  // render() {
-  //   return (
-  //     <CurrentLocation
-  //       centerAroundCurrentLocation
-  //       google={this.props.google}
-  //       onClick={this.onClick}
-  //     >
-  //       <Marker onClick={this.onMarkerClick} name={'Current Location'} />
-  //       <InfoWindow
-  //         marker={this.state.activeMarker}
-  //         visible={this.state.showingInfoWindow}
-  //         onClose={this.onClose}
-  //       >
-  //         <div>
-  //           <h4>{this.state.selectedPlace.name}</h4>
-  //         </div>
-  //       </InfoWindow>
-  //     </CurrentLocation>
-  //   );
-  // }
 }
 
 export default GoogleApiWrapper({
