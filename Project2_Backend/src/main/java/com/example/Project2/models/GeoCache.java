@@ -1,11 +1,16 @@
 package com.example.Project2.models;
 
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Arrays;
 
+/** this is using jdk11
+ * 
+ */
+@Data
 @Document(collection="geocaches")
 public class GeoCache {
     @Id
