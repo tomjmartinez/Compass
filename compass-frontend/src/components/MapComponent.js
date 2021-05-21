@@ -21,13 +21,7 @@ class MapComponent extends Component {
       selectedPlace: props,
       activeMarker: props,
       showingInfoWindow: true,
-      markers: [
-        {
-          title: "The marker`s title will appear as a tooltip.",
-          name: "SOMA",
-          position: { lat: 37.778519, lng: -122.40564 }
-        }
-      ]
+      markers: []
     };
     this.onClick = this.onClick.bind(this);
   }
@@ -35,7 +29,6 @@ class MapComponent extends Component {
   componentDidMount() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position.coords);
         this.setState(previousState => {
           return {
             currentLat: position.coords.latitude,
@@ -51,22 +44,42 @@ class MapComponent extends Component {
         });
       });
     }
+
+    const interval = setInterval(() => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          if(position.coords.latitude != this.state.currentLat || position.coords.longitude != this.state.currentLng) {
+            this.setState(previousState => {
+              return {
+                currentLat: position.coords.latitude,
+                currentLng: position.coords.longitude,
+                markers: [
+                  {
+                    title: "Current Location",
+                    name: "Current Location",
+                    position: { lat: position.coords.latitude, lng: position.coords.longitude }
+                  }
+                ]
+              };
+            });
+          }
+        });
+      }
+      return;
+    }, 60000)
   }
 
   onLoad() {
-    console.log("test");
+    
   }
 
   onClick(t, map, coord) {
-    console.log(this.state.markers);
     const { latLng } = coord;
     const lat = latLng.lat();
     const lng = latLng.lng();
 
     this.setState(previousState => {
       return {
-        currentLat: lat,
-        currentLng: lng,
         markers: [
           ...previousState.markers,
           {
@@ -77,7 +90,6 @@ class MapComponent extends Component {
         ]
       };
     });
-    console.log(this.state.markers);
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -86,7 +98,6 @@ class MapComponent extends Component {
       activeMarker: marker,
       showingInfoWindow: true,
     });
-    console.log(this.state);
   }
 
   onClose = props => {
@@ -99,11 +110,10 @@ class MapComponent extends Component {
   };
 
   render() {
-    console.log(this.state)
     return (
       <Map
         google={this.props.google}
-        zoom={14}
+        zoom={12}
         className={"map"}
         center={{ lat: this.state.currentLat, lng: this.state.currentLng }}
         style={mapStyles}
