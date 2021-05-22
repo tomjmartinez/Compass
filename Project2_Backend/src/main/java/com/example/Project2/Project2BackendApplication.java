@@ -2,6 +2,8 @@ package com.example.Project2;
 
 import com.example.Project2.models.GeoCache;
 import com.example.Project2.models.GeoCacheRepo;
+import com.example.Project2.models.User;
+import com.example.Project2.repos.UserRepo;
 import org.bson.types.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,10 +15,12 @@ import org.springframework.context.annotation.Bean;
 public class Project2BackendApplication {
 
 	private GeoCacheRepo geoCacheRepo;
+	private DatabaseLoader databaseLoader;
+	private UserRepo userRepo;
 
 	@Autowired
-	public Project2BackendApplication(GeoCacheRepo geoCacheRepo) {
-		this.geoCacheRepo = geoCacheRepo;
+	public Project2BackendApplication(UserRepo userRepo) {
+		this.userRepo = userRepo;
 	}
 
 	public static void main(String[] args) {
@@ -25,10 +29,10 @@ public class Project2BackendApplication {
 
 	@Bean
 	public CommandLineRunner runner() {
-		return a -> {
-			GeoCache geoCache1 = geoCacheRepo.findById(new ObjectId("60a58d0cbf60f52c36a12bf5")).orElse(null);
-			System.out.println(geoCache1);
+		return args -> {
+			System.out.println("Hello World");
 		};
 	}
 
 }
+

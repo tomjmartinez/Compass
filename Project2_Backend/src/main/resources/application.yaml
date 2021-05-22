@@ -3,3 +3,8 @@ spring:
         mongodb:
             uri: mongodb+srv://user:uqVZ2SEpjEx7d8k@cluster0.32jir.mongodb.net/compass?retryWrites=true&w=majority
             database: compass
+
+server:
+    port: 8000
+    servlet:
+        context-path: /my-app
