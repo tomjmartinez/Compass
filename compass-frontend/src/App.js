@@ -9,7 +9,7 @@ class App extends React.Component{
   render() {
     return(
         <div className={"App"}>
-          <MapComponent></MapComponent>
+            <CreateAccountComponent></CreateAccountComponent>
         </div>
     );
   }
