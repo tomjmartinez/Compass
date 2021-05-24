@@ -42,7 +42,7 @@ public class UserController {
         System.out.println(json);
         ObjectMapper objectMapper = new ObjectMapper();
         User newUser = objectMapper.readValue(json, User.class);
-        User result = userRepo.save(new User(newUser.getUsername(),newUser.getPassword()));
+        User result = userRepo.save(newUser);
         System.out.println(result);
         return ResponseEntity.created(new URI("api/user" + result.getUsername()))
                 .body(result);
