@@ -1,8 +1,9 @@
 package com.example.Project2;
 
 import com.example.Project2.models.GeoCache;
-import com.example.Project2.models.GeoCacheRepo;
+import com.example.Project2.repos.GeoCacheRepo;
 import com.example.Project2.models.User;
+import com.example.Project2.repos.GeoCacheRepo;
 import com.example.Project2.repos.UserRepo;
 import org.bson.types.*;
 import org.springframework.beans.factory.annotation.Autowired;

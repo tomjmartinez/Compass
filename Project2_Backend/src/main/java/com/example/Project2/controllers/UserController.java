@@ -32,12 +32,15 @@ public class UserController {
     @CrossOrigin("http://localhost:3000/login")
     @RequestMapping(method = RequestMethod.GET,value = "/users/{username}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getUser(@PathVariable String username){
+    public Map getUser(@PathVariable String username){
+        System.out.println("inside getUser...");
         User user = userRepo.findByUsername(username);
-        Map<String,String> response = new HashMap<String,String>();
-        response.put("username", user.getUsername());
-        response.put("password",user.getPassword());
-        return new Gson().toJson(response);
+        Map response = new HashMap();
+        response.put("user", user); //.toString()
+        response.put("userID",user.getId().toString());
+        List userAndID = new ArrayList();
+        System.out.println(user.getId().toString());
+        return response;
     }
 
 
@@ -45,7 +48,8 @@ public class UserController {
     ResponseEntity<User> createUser(@RequestBody String json) throws URISyntaxException, JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         User newUser = objectMapper.readValue(json, User.class);
-        User result = userRepo.save(new User(newUser.getUsername(),newUser.getPassword()));
+        User result = userRepo.save(newUser);
+        System.out.println(result);
         return ResponseEntity.created(new URI("api/user" + result.getUsername()))
                 .body(result);
     }
