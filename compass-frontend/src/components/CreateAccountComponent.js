@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-
+import {withRouter} from "react-router-dom";
 import "../styles/CreateAccountComponent.css"
-import {Container, Row, Col, Form, FormGroup, Label, Input, Button} from "reactstrap";
+import {Container, Row, Col, Form, FormGroup, Label, Input, Button, NavLink} from "reactstrap";
 import axios from "axios";
 
 // eslint-disable-next-line no-unused-vars
@@ -11,7 +11,7 @@ class CreateAccountComponent extends React.Component{
         super(props);
         this.state = {
             username: "",
-            password: ""
+            password: "",
         };
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -35,16 +35,16 @@ class CreateAccountComponent extends React.Component{
                 console.log(res.data);
             })
     }
-
-
     handleUsernameChange(event){
         this.setState({username: event.target.value});
         console.log(event.target.value);
     }
-
     handlePasswordChange(event){
         this.setState({password: event.target.value});
         console.log(event.target.value);
+    }
+    handleNextPath(path){
+        this.props.history.push(path);
     }
 
 
@@ -55,7 +55,7 @@ class CreateAccountComponent extends React.Component{
             <Container className={"createAccount"}>
                 <Form onSubmit={this.handleSubmit}>
                     <h1>
-                        <span className={"font-weight-bold"}>Compass</span>
+                        <span className={"font-weight-bold"}>Compass Create Account</span>
                     </h1>
                 <Row className={"accountRows"}>
                     <Col >
@@ -83,13 +83,14 @@ class CreateAccountComponent extends React.Component{
                 </Row>
                 <Row className={"accountRows"}>
                     <Col>
-                        <Button variant="success">Create Account</Button>
+                        <Button variant="success">Submit</Button>
                     </Col>
                 </Row>
                 </Form>
+                        <Button id={"btn-login"} onClick={()=>this.handleNextPath('/login')} >Login</Button>
             </Container>
         );
     }
 }
 
-export default CreateAccountComponent;
+export default withRouter(CreateAccountComponent);
