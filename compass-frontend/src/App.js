@@ -4,6 +4,7 @@ import MapComponent from "./components/MapComponent";
 import LoginComponent from "./components/LoginComponent";
 import "./App.css";
 import MyGeoCaches from "./components/MyGeoCaches";
+import AllGeoCaches from "./components/AllGeoCaches";
 import CreateGeoCacheComponent from "./components/CreateGeoCacheComponent";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
@@ -18,6 +19,7 @@ class App extends React.Component{
                 <Route path={"/"} exact component={CreateAccountComponent}/>
                 <Route path={"/login"} component={LoginComponent}/>
                 <Route path={"/my-geocaches"} component={MyGeoCaches}/>
+                <Route path={"/all-geocaches"} component={AllGeoCaches}/>
             </Switch>
         </Router>
         </div>

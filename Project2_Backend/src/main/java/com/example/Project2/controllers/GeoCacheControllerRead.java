@@ -20,12 +20,10 @@ public class GeoCacheControllerRead {
     @Autowired
     private GeoCacheRepo geoCacheRepo;// = null;
 
-    //@CrossOrigin("http://localhost:3000")
     @RequestMapping(value = "/my-geocaches/{gifter}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GeoCache> readMyGeoCaches(@PathVariable String gifter){
         ObjectId gifterID = new ObjectId(gifter);
         List<GeoCache> results = geoCacheRepo.findAllByGifter(gifterID);
-        System.out.println(results);
         log.debug("reading all geocaches for gifter" + gifter); //get session or current user
         return results;
     }
@@ -33,7 +31,6 @@ public class GeoCacheControllerRead {
     @RequestMapping(value = "/all-geocaches", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GeoCache> readAllGeoCaches(){
         List<GeoCache> results = geoCacheRepo.findAll();
-        System.out.println(results);
         log.debug("reading all geocaches."); //get session or current user
         return results;
     }
