@@ -20,7 +20,6 @@ public class GeoCacheControllerRead {
     @Autowired
     private GeoCacheRepo geoCacheRepo;// = null;
 
-    //@CrossOrigin("http://localhost:3000")
     @RequestMapping(value = "/my-geocaches/{gifter}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GeoCache> readMyGeoCaches(@PathVariable String gifter){
         ObjectId gifterID = new ObjectId(gifter);
