@@ -15,7 +15,6 @@ class MyGeoCaches extends Component{
     componentDidMount(){
         axios.get("http://localhost:8000/my-app/api/my-geocaches/" + localStorage.getItem("currentUser"))
             .then(response =>{
-                console.log(response.data);
                 this.setState({myGeoCaches: response.data})
             })
             .catch()
@@ -23,7 +22,6 @@ class MyGeoCaches extends Component{
 
     render(){
         const {myGeoCaches} = this.state
-        console.log(myGeoCaches)
         return (
             <div>
                 <h2>My GeoCaches</h2>
