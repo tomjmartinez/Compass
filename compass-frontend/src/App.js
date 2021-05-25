@@ -4,6 +4,7 @@ import MapComponent from "./components/MapComponent";
 import LoginComponent from "./components/LoginComponent";
 import "./App.css";
 import MyGeoCaches from "./components/MyGeoCaches";
+import CreateGeoCacheComponent from "./components/CreateGeoCacheComponent";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 
