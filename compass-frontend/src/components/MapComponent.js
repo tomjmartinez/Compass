@@ -1,8 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
-import CurrentLocation from './CurrentLocationComponent';
-
 const mapStyles = {
   disableDefaultUI: true,
   position: 'absolute',
@@ -119,9 +117,8 @@ class MapComponent extends Component {
         style={mapStyles}
         onClick={this.onClick}
       >
-        {this.state.markers.map((marker, index) => (
+        {this.state.markers.map((marker) => (
             <Marker
-              key={index}
               title={marker.title}
               name={marker.name}
               position={marker.position}
