@@ -4,6 +4,7 @@ import com.example.Project2.repos.UserRepo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -30,16 +31,38 @@ public class UserController {
     }
     */
     @CrossOrigin("http://localhost:3000/login")
-    @RequestMapping(method = RequestMethod.GET,value = "/users/{username}",
+    @RequestMapping(method = RequestMethod.GET,value = "/users/{username}/{password}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map getUser(@PathVariable String username){
+    public Map getUser(@PathVariable String username, @PathVariable String password){
         System.out.println("inside getUser...");
-        User user = userRepo.findByUsername(username);
+        User user = userRepo.findByUsernameAndPassword(username, password);
         Map response = new HashMap();
         response.put("user", user); //.toString()
         response.put("userID",user.getId().toString());
         List userAndID = new ArrayList();
-        System.out.println(user.getId().toString());
+        return response;
+    }
+
+    //@CrossOrigin("http://localhost:3000/login-secure")
+    @RequestMapping(method = RequestMethod.POST,value = "/secure-login",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map loginSecure(@RequestBody Map obj){
+        System.out.println("inside getUser...");
+        System.out.println(obj.toString());
+        String username = (String) obj.get("username");
+        String password = (String) obj.get("password");
+        User user = userRepo.findByUsernameAndPassword(username, password);
+
+        Map response = new HashMap();
+        response.put("successful", false);
+        if(user != null) {
+            response.put("successful", true);
+            response = new HashMap();
+            response.put("user", user); //.toString()
+            response.put("userID", user.getId().toString());
+            List userAndID = new ArrayList();
+        }
+        System.out.println(response.toString());
         return response;
     }
 
