@@ -33,7 +33,7 @@ class CreateGeoCacheComponent extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount() {
+  checkLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.setState(previousState => {
@@ -51,29 +51,6 @@ class CreateGeoCacheComponent extends Component {
         });
       });
     }
-
-    const interval = setInterval(() => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          if(position.coords.latitude != this.state.currentLat || position.coords.longitude != this.state.currentLng) {
-            this.setState(previousState => {
-              return {
-                currentLat: position.coords.latitude,
-                currentLng: position.coords.longitude,
-                markers: [
-                  {
-                    title: "Current Location",
-                    name: "Current Location",
-                    position: { lat: position.coords.latitude, lng: position.coords.longitude }
-                  }
-                ]
-              };
-            });
-          }
-        });
-      }
-      return;
-    }, 60000)
   }
 
   onClick(t, map, coord) {
@@ -125,8 +102,8 @@ class CreateGeoCacheComponent extends Component {
         gifter: localStorage.getItem('currentUser')
       }
       axios.post(`http://localhost:8000/my-app/api/newGeoCache`, form, config ).then(res => {
-      axios.post('http://localhost:8000/my-app/api/user/seeking/' + localStorage.getItem('username'),
-      res.data, config).then(result => console.log(result.data))
+      // axios.post('http://localhost:8000/my-app/api/user/seeking/' + localStorage.getItem('username'),
+      // res.data, config).then(result => console.log(result.data))
     })
   }
 
@@ -136,18 +113,17 @@ class CreateGeoCacheComponent extends Component {
 
   handleDescriptionChange(event){
       this.setState({description: event.target.value});
-      console.log(this.state.description);
   }
 
   handleTimeChange(event){
       this.setState({timeLimit: event.target.value});
-      console.log(event.target.value);
   }
 
   render() {
     if(localStorage.getItem('user' == undefined)) {
       this.props.history.push("/login")
     }
+    this.checkLocation();
     return (
       <Container>
         <Form onSubmit={this.handleSubmit}>
