@@ -19,7 +19,8 @@ class MapComponent extends Component {
       selectedPlace: props,
       activeMarker: props,
       showingInfoWindow: true,
-      markers: []
+      markers: [],
+      testMarkers: props.geoCaches || []
     };
     this.onClick = this.onClick.bind(this);
   }
@@ -32,6 +33,7 @@ class MapComponent extends Component {
             currentLat: position.coords.latitude,
             currentLng: position.coords.longitude,
             markers: [
+              ...previousState.markers,
               {
                 title: "Current Location",
                 name: "Current Location",
@@ -52,6 +54,7 @@ class MapComponent extends Component {
                 currentLat: position.coords.latitude,
                 currentLng: position.coords.longitude,
                 markers: [
+                  ...previousState.markers,
                   {
                     title: "Current Location",
                     name: "Current Location",
@@ -107,7 +110,30 @@ class MapComponent extends Component {
     }
   };
 
+  fixMarkers() {
+    if(this.state.testMarkers.length == 0) {
+      return;
+    }
+    const newMarkers = [];
+    this.state.testMarkers.forEach((marker) => (
+      newMarkers.push({
+        title: marker.description,
+        name: marker.description,
+        gifter: marker.gifter,
+        position: {lat: marker.location.y, lng: marker.location.x},
+      })
+    ))
+    this.setState(previousState => {
+      return {
+        currentLat: -90,
+        markers: newMarkers,
+        testMarkers: []
+      };
+    });
+  }
+
   render() {
+    this.fixMarkers();
     return (
       <Map
         google={this.props.google}
@@ -139,6 +165,9 @@ class MapComponent extends Component {
   }
 }
 
-export default GoogleApiWrapper({
-  apiKey: 'AIzaSyB1dfOSar0Tt4sm84JntjfLujmj8GE_u8I'
-})(MapComponent);
+export default GoogleApiWrapper(
+  (props) => ({
+    apiKey: 'AIzaSyB1dfOSar0Tt4sm84JntjfLujmj8GE_u8I',
+    markers: props.geoCaches,
+  }
+))(MapComponent)

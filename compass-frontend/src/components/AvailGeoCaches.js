@@ -2,6 +2,7 @@ import axios from "axios"
 import React, { Component } from "react"
 import GeoCachesTable from "./GeoCachesTable"
 import "../styles/geostyles.css"
+import MapComponent from "./MapComponent"
 
 //const MyGeoCaches = () => {}
 
@@ -24,7 +25,7 @@ class AvailGeoCaches extends Component{
     render(){
         const {availGeoCaches} = this.state
         return (
-            <GeoCachesTable geoCaches={availGeoCaches} />
+            <MapComponent geoCaches={this.state.availGeoCaches} />
         )
     }
 }

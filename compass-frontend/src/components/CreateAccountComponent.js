@@ -32,16 +32,13 @@ class CreateAccountComponent extends React.Component{
             }
         ,)
             .then(res => {
-                console.log(res.data);
             })
     }
     handleUsernameChange(event){
         this.setState({username: event.target.value});
-        console.log(event.target.value);
     }
     handlePasswordChange(event){
         this.setState({password: event.target.value});
-        console.log(event.target.value);
     }
     handleNextPath(path){
         this.props.history.push(path);
