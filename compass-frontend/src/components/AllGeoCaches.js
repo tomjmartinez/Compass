@@ -1,6 +1,7 @@
 import axios from "axios"
 import React, { Component } from "react"
 import GeoCachesTable from "./GeoCachesTable"
+import GeoCachesCheckout from "./GeoCachesCheckout"
 import "../styles/geostyles.css"
 
 //const MyGeoCaches = () => {}
@@ -16,6 +17,7 @@ class AllGeoCaches extends Component{
     componentDidMount(){
         axios.get("http://localhost:8000/my-app/api/all-geocaches")
             .then(response =>{
+                console.log(response.data)
                 this.setState({allGeoCaches: response.data})
             })
             .catch()
@@ -24,7 +26,7 @@ class AllGeoCaches extends Component{
     render(){
         const {allGeoCaches} = this.state
         return (
-            <GeoCachesTable geoCaches={allGeoCaches} />
+            <GeoCachesCheckout geoCaches={allGeoCaches} />
         )
     }
 }

@@ -37,7 +37,9 @@ public class GeoCacheControllerRead {
 
     @RequestMapping(value = "/all-geocaches", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GeoCache> readAllGeoCaches(){
+        System.out.println("inside readallGeocaches.");
         List<GeoCache> results = geoCacheRepo.findAll();
+        System.out.println(results.toString());
         log.debug("reading all geocaches."); //get session or current user
         return results;
     }
@@ -52,13 +54,11 @@ public class GeoCacheControllerRead {
     @RequestMapping(method = RequestMethod.POST,value = "/near-geocaches",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GeoCache> readNearGeoCaches(@RequestBody Map obj){
-        System.out.println("inside getUser...");
-        System.out.println(obj.toString());
         double lon = (double) obj.get("lon");
         double lat = (double) obj.get("lat");
         List<GeoCache> nearGeos = geoCacheRepo.findNear(lon, lat);
 
-        System.out.println(nearGeos.toString());
+        log.debug("populating nearby geocaches from " + lon + " " + lat);
         return nearGeos;
     }
 }

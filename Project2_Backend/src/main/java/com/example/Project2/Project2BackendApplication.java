@@ -5,6 +5,8 @@ import com.example.Project2.repos.GeoCacheRepo;
 import com.example.Project2.models.User;
 import com.example.Project2.repos.GeoCacheRepo;
 import com.example.Project2.repos.UserRepo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bson.types.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
