@@ -22,16 +22,14 @@ public class GeoCacheControllerAdd {
     @Autowired
     private GeoCacheRepo geoCacheRepo;// = null;
 
-
-
     @PostMapping(value="/newGeoCache")
-    ResponseEntity<GeoCache> createGeoCache(@RequestBody String json) throws URISyntaxException, JsonProcessingException {
+    public ResponseEntity<String> createGeoCache(@RequestBody String json) throws URISyntaxException, JsonProcessingException {
         System.out.println(json);
         ObjectMapper objectMapper = new ObjectMapper();
         GeoCache newCache = objectMapper.readValue(json, GeoCache.class);
         GeoCache result = geoCacheRepo.save(newCache);
         System.out.println(result);
         return ResponseEntity.created(new URI("api/geoCache" + result.getId().toString()))
-                .body(result);
+                .body(result.getId().toString());
     }
 }

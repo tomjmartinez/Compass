@@ -109,17 +109,30 @@ class CreateGeoCacheComponent extends Component {
   handleSubmit(event){
       event.preventDefault();
 
+      const config = {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
+        }
+      };
+
+      const coords = [this.state.newLat, this.state.newLng];
+
       const form = {
         //insert current user id here
-        coordinates: [this.state.newLat, this.state.newLng],
+        location: [{
+          type: "point",
+          coordinates: coords
+        }],
         // mysteryFlag: this.state.mysteryFlag,
         description: this.state.description,
-        timeLimit: this.state.timeLimit
+        timeLimit: this.state.timeLimit,
+        gifter: localStorage.getItem('currentUser')
       }
-
-      axios.post(`http://localhost:8000/my-app/api/newGeoCache`, form,
-      { headers:{'Content-Type': 'application/json'}, }
-      ).then(res => {console.log(res.data); })
+      axios.post(`http://localhost:8000/my-app/api/newGeoCache`, form, config ).then(res => {
+      axios.post('http://localhost:8000/my-app/api/user/seeking/' + localStorage.getItem('username'),
+      res.data, config).then(result => console.log(result.data))
+    })
   }
 
   handleNextPath(path){
@@ -137,6 +150,9 @@ class CreateGeoCacheComponent extends Component {
   }
 
   render() {
+    if(localStorage.getItem('user' == undefined)) {
+      this.props.history.push("/login")
+    }
     return (
       <Container>
         <Form onSubmit={this.handleSubmit}>

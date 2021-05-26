@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class GeoCache {
     @Id
     private ObjectId id;
-    private float[] coordinates = new float[2];
+    private Location location;
     private String description;
     private String gifter; //Should this be of ObjectId type?
     private String reviewer; //Should this be of ObjectId type?
@@ -36,12 +36,12 @@ public class GeoCache {
         this.id = id;
     }
 
-    public float[] getCoordinates() {
-        return coordinates;
+    public double[] getCoordinates() {
+        return location.getCoordinates();
     }
 
-    public void setCoordinates(float[] coordinates) {
-        this.coordinates = coordinates;
+    public void setCoordinates(double[] coordinates) {
+        this.location.setCoordinates(coordinates);
     }
 
     public String getDescription() {
@@ -104,7 +104,7 @@ public class GeoCache {
     public String toString() {
         return "GeoCache{" +
                 "id=" + id +
-                ", coordinates=" + Arrays.toString(coordinates) +
+                ", coordinates=" + Arrays.toString(location.getCoordinates()) +
                 ", description='" + description + '\'' +
                 ", gifter='" + gifter + '\'' +
                 ", reviewer='" + reviewer + '\'' +
