@@ -76,4 +76,17 @@ public class UserController {
         return ResponseEntity.created(new URI("api/user" + result.getUsername()))
                 .body(result);
     }
+
+    @CrossOrigin("http://localhost:3000/create-geocache")
+    @RequestMapping(method = RequestMethod.POST, value = "/user/seeking/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map updateSeeking(@PathVariable String username, @RequestBody String json) {
+        System.out.println("------------------");
+        User found = userRepo.findByUsername(username);
+        found.setSeeking(json);
+        System.out.println(found.getSeeking());
+        User result = userRepo.save(found);
+        Map response = new HashMap();
+        response.put("seeking", result.getSeeking());
+        return response;
+    }
 }

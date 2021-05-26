@@ -13,6 +13,7 @@ public class User {
     private ObjectId id;
     private String username;
     private String password;
+    private String seeking;
 
     private User(){}
 
@@ -43,5 +44,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSeeking() {
+        return seeking;
+    }
+
+    public void setSeeking(String seeking) {
+        this.seeking = seeking;
     }
 }
