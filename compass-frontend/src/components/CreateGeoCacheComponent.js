@@ -116,14 +116,9 @@ class CreateGeoCacheComponent extends Component {
         }
       };
 
-      const coords = [this.state.newLat, this.state.newLng];
-
       const form = {
         //insert current user id here
-        location: [{
-          type: "point",
-          coordinates: coords
-        }],
+        coordinates: [this.state.newLat, this.state.newLng],
         // mysteryFlag: this.state.mysteryFlag,
         description: this.state.description,
         timeLimit: this.state.timeLimit,

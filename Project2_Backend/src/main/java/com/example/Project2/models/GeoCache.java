@@ -6,6 +6,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJson;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.*;
+
 /** this is using jdk11
  * 
  */
@@ -33,6 +35,14 @@ public class GeoCache {
 
     public void setId(ObjectId id) {
         this.id = id;
+    }
+
+    public GeoJson getLocation() {
+        return location;
+    }
+
+    public void setLocation(GeoJson location) {
+        this.location = location;
     }
 
     public String getDescription() {
