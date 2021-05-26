@@ -35,8 +35,9 @@ class LoginComponent  extends React.Component{
 
         axios.get(`http://localhost:8000/my-app/api/users/${this.state.username}`, config)
             .then(res => {
-                addStorage(res.data.user.username, res.data.user.password, res.data.userID)
-                console.log(res.data);
+                addStorage(res.data.user.username, res.data.user.password, res.data.id)
+                console.log(res.data)
+                ;
             });
     }
     handleNextPath(path){
