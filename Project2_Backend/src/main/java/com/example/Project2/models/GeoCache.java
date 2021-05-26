@@ -3,19 +3,18 @@ package com.example.Project2.models;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.geo.GeoJson;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Arrays;
 
 /** this is using jdk11
  * 
  */
 @Data
-@Document(collection="geocaches")
+@Document(collection="geocachesGJ")
 public class GeoCache {
     @Id
     private ObjectId id;
-    private float[] coordinates = new float[2];
+    private GeoJson location;
     private String description;
     private String gifter; //Should this be of ObjectId type?
     private String reviewer; //Should this be of ObjectId type?
@@ -34,14 +33,6 @@ public class GeoCache {
 
     public void setId(ObjectId id) {
         this.id = id;
-    }
-
-    public float[] getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(float[] coordinates) {
-        this.coordinates = coordinates;
     }
 
     public String getDescription() {
@@ -104,7 +95,7 @@ public class GeoCache {
     public String toString() {
         return "GeoCache{" +
                 "id=" + id +
-                ", coordinates=" + Arrays.toString(coordinates) +
+                ", location=" + location +
                 ", description='" + description + '\'' +
                 ", gifter='" + gifter + '\'' +
                 ", reviewer='" + reviewer + '\'' +

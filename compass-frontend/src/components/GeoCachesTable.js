@@ -24,7 +24,7 @@ function GeoCachesTable(props) {
                     geoCaches.map( gc => { 
                         return(
                             <tr className="geo-row">
-                                <td> {gc.coordinates[0]}, {gc.coordinates[1]}  </td>
+                                <td> {gc.location.coordinates[0]}, {gc.location.coordinates[1]}  </td>
                                 <td>| {gc.description}  </td>
                                 <td>| {gc.gifter}  </td>
                                 <td>| {gc.reviewer? gc.reviewer: "null"}  </td>

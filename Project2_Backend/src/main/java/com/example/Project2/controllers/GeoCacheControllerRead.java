@@ -1,6 +1,7 @@
 package com.example.Project2.controllers;
 
 import com.example.Project2.models.GeoCache;
+import com.example.Project2.models.User;
 import com.example.Project2.repos.GeoCacheRepo;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -12,7 +13,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/")
@@ -43,5 +47,18 @@ public class GeoCacheControllerRead {
         List<GeoCache> avail = geoCacheRepo.findAvail();
         log.debug("reading all available geocaches."); //get session or current user
         return avail;
+    }
+
+    @RequestMapping(method = RequestMethod.POST,value = "/near-geocaches",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<GeoCache> readNearGeoCaches(@RequestBody Map obj){
+        System.out.println("inside getUser...");
+        System.out.println(obj.toString());
+        double lon = (double) obj.get("lon");
+        double lat = (double) obj.get("lat");
+        List<GeoCache> nearGeos = geoCacheRepo.findNear(lon, lat);
+
+        System.out.println(nearGeos.toString());
+        return nearGeos;
     }
 }

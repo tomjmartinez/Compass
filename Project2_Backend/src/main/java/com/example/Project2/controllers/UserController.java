@@ -31,11 +31,11 @@ public class UserController {
     }
     */
     @CrossOrigin("http://localhost:3000/login")
-    @RequestMapping(method = RequestMethod.GET,value = "/users/{username}/{password}",
+    @RequestMapping(method = RequestMethod.GET,value = "/users/{username}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map getUser(@PathVariable String username, @PathVariable String password){
+    public Map getUser(@PathVariable String username){
         System.out.println("inside getUser...");
-        User user = userRepo.findByUsernameAndPassword(username, password);
+        User user = userRepo.findByUsername(username);
         Map response = new HashMap();
         response.put("user", user); //.toString()
         response.put("userID",user.getId().toString());
