@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import GeoCachesTable from "./GeoCachesTable"
 import GeoCachesCheckout from "./GeoCachesCheckout"
 import "../styles/geostyles.css"
+import MapComponent from "./MapComponent"
 
 //const MyGeoCaches = () => {}
 
@@ -24,9 +25,13 @@ class AllGeoCaches extends Component{
     }
 
     render(){
-        const {allGeoCaches} = this.state
+        const {allGeoCaches} = this.state;
+
         return (
-            <GeoCachesCheckout geoCaches={allGeoCaches} />
+            <div>
+                <GeoCachesCheckout geoCaches={allGeoCaches} />
+                <MapComponent geoCaches={this.state.allGeoCaches} />
+            </div>
         )
     }
 }

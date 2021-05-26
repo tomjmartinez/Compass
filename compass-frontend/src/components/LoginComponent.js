@@ -36,7 +36,6 @@ class LoginComponent  extends React.Component{
         axios.get(`http://localhost:8000/my-app/api/users/${this.state.username}`, config)
             .then(res => {
                 addStorage(res.data.user.username, res.data.user.password, res.data.userID)
-                console.log(res.data);
             });
     }
     handleNextPath(path){
@@ -44,11 +43,9 @@ class LoginComponent  extends React.Component{
     }
     handleUsernameChange(event){
         this.setState({username: event.target.value});
-        console.log(this.state.username);
     }
     handlePasswordChange(event){
         this.setState({password: event.target.value});
-        console.log(event.target.value);
     }
 
     // eslint-disable-next-line react/require-render-return

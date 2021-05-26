@@ -27,6 +27,7 @@ class App extends React.Component{
                 <Route path={"/secure-login"} component={SecureLogin}/>
                 <Route path={"/near-geocaches"} component={NearGeoCaches}/>
                 <Route path={"/create-geocache"} component={CreateGeoCache}/>
+                <Route path={"/map"} component={MapComponent}/>
             </Switch>
         </Router>
         </div>
