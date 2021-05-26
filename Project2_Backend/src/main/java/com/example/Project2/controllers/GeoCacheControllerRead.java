@@ -2,9 +2,13 @@ package com.example.Project2.controllers;
 
 import com.example.Project2.models.GeoCache;
 import com.example.Project2.repos.GeoCacheRepo;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,12 +23,25 @@ public class GeoCacheControllerRead {
     @Autowired
     private GeoCacheRepo geoCacheRepo;// = null;
 
-
-    @RequestMapping(value = "/my-geocaches", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<GeoCache> readMyGeoCaches(){
-        List<GeoCache> results = geoCacheRepo.findAll();
-        System.out.println(results);
-        log.debug("reading all geocaches for"); //get session or current user
+    @RequestMapping(value = "/my-geocaches/{gifter}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<GeoCache> readMyGeoCaches(@PathVariable String gifter){
+        ObjectId gifterID = new ObjectId(gifter);
+        List<GeoCache> results = geoCacheRepo.findAllByGifter(gifterID);
+        log.debug("reading all geocaches for gifter" + gifter); //get session or current user
         return results;
+    }
+
+    @RequestMapping(value = "/all-geocaches", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<GeoCache> readAllGeoCaches(){
+        List<GeoCache> results = geoCacheRepo.findAll();
+        log.debug("reading all geocaches."); //get session or current user
+        return results;
+    }
+
+    @RequestMapping(value = "/avail-geocaches", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<GeoCache> readAvailableGeoCaches(){
+        List<GeoCache> avail = geoCacheRepo.findAvail();
+        log.debug("reading all available geocaches."); //get session or current user
+        return avail;
     }
 }
