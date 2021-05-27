@@ -1,8 +1,10 @@
 package com.example.Project2.controllers;
 
 import com.example.Project2.models.GeoCache;
+import com.example.Project2.models.User;
 import com.example.Project2.repos.GeoCacheRepo;
 import org.bson.types.ObjectId;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/")
@@ -32,10 +37,20 @@ public class GeoCacheControllerRead {
     }
 
     @RequestMapping(value = "/all-geocaches", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<GeoCache> readAllGeoCaches(){
-        List<GeoCache> results = geoCacheRepo.findAll();
+    public Map readAllGeoCaches(){
+        ArrayList<GeoCache> results = (ArrayList<GeoCache>) geoCacheRepo.findAll();
+
+        ArrayList<String> resultIds = new ArrayList<String>();
+        for(int i = 0; i < results.size(); i++){
+            resultIds.add(results.get(i).getId().toString());
+        }
+
+        Map listPack = new HashMap();
+        listPack.put("geocaches", results);
+        listPack.put("geoids", resultIds);
+
         log.debug("reading all geocaches."); //get session or current user
-        return results;
+        return listPack;
     }
 
     @RequestMapping(value = "/avail-geocaches", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,5 +58,51 @@ public class GeoCacheControllerRead {
         List<GeoCache> avail = geoCacheRepo.findAvail();
         log.debug("reading all available geocaches."); //get session or current user
         return avail;
+    }
+
+    @RequestMapping(method = RequestMethod.POST,value = "/near-geocaches",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<GeoCache> readNearGeoCaches(@RequestBody Map obj){
+        double lon = (double) obj.get("lon");
+        double lat = (double) obj.get("lat");
+        List<GeoCache> nearGeos = geoCacheRepo.findNear(lon, lat);
+
+        log.debug("populating nearby geocaches from " + lon + " " + lat);
+        return nearGeos;
+    }
+
+    @RequestMapping(method = RequestMethod.POST,value = "/checkout-geocache", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public String updateGeoCaches(@RequestBody Map obj){
+        String success = "false";
+
+        String checkingOut = (String) obj.get("checkingOut");
+        String currentUser = (String) obj.get("currentUser");
+
+        try {
+            GeoCache geo2RemoveFinder = geoCacheRepo.findByFinder(currentUser);
+            System.out.println("find by finder: " + geo2RemoveFinder);
+            if(geo2RemoveFinder != null) {
+                geo2RemoveFinder.setFinder(null);
+                System.out.println("to remove" + geo2RemoveFinder);
+                geoCacheRepo.save(geo2RemoveFinder);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+            GeoCache geo2Update = geoCacheRepo.findById(checkingOut);
+            geo2Update.setFinder(currentUser);
+            geoCacheRepo.save(geo2Update);
+
+
+        if(geo2Update != null) {
+            success = checkingOut;
+            log.debug("updated geocache " + checkingOut + " checkout to " + currentUser);
+        } else {
+            success = "false";
+        }
+
+        return success;
     }
 }

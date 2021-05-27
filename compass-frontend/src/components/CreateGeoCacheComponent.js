@@ -7,7 +7,7 @@ const mapStyles = {
   disableDefaultUI: true,
   position: 'absolute',
   width: '85%',
-  height: '50%',
+  height: '85%',
   zoomControl: true,
   streetViewControl: false
 };
@@ -39,14 +39,7 @@ class CreateGeoCacheComponent extends Component {
         this.setState(previousState => {
           return {
             currentLat: position.coords.latitude,
-            currentLng: position.coords.longitude,
-            markers: [
-              {
-                title: "Current Location",
-                name: "Current Location",
-                position: { lat: position.coords.latitude, lng: position.coords.longitude }
-              }
-            ]
+            currentLng: position.coords.longitude
           };
         });
       });
@@ -59,14 +52,7 @@ class CreateGeoCacheComponent extends Component {
             this.setState(previousState => {
               return {
                 currentLat: position.coords.latitude,
-                currentLng: position.coords.longitude,
-                markers: [
-                  {
-                    title: "Current Location",
-                    name: "Current Location",
-                    position: { lat: position.coords.latitude, lng: position.coords.longitude }
-                  }
-                ]
+                currentLng: position.coords.longitude
               };
             });
           }
@@ -84,7 +70,9 @@ class CreateGeoCacheComponent extends Component {
     this.setState(previousState => {
       return {
         newLat: lat,
-        newLng: lng
+        newLng: lng,
+        activeMarker: null,
+        showingInfoWindow: false
       };
     });
   }
@@ -109,17 +97,25 @@ class CreateGeoCacheComponent extends Component {
   handleSubmit(event){
       event.preventDefault();
 
+      const config = {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
+        }
+      };
+
       const form = {
         //insert current user id here
         coordinates: [this.state.newLat, this.state.newLng],
         // mysteryFlag: this.state.mysteryFlag,
         description: this.state.description,
-        timeLimit: this.state.timeLimit
+        timeLimit: this.state.timeLimit,
+        gifter: localStorage.getItem('currentUser')
       }
-
-      axios.post(`http://localhost:8000/my-app/api/newGeoCache`, form,
-      { headers:{'Content-Type': 'application/json'}, }
-      ).then(res => {console.log(res.data); })
+      axios.post(`http://localhost:8000/my-app/api/newGeoCache`, form, config ).then(res => {
+      // axios.post('http://localhost:8000/my-app/api/user/seeking/' + localStorage.getItem('username'),
+      // res.data, config).then(result => console.log(result.data))
+    })
   }
 
   handleNextPath(path){
@@ -128,20 +124,33 @@ class CreateGeoCacheComponent extends Component {
 
   handleDescriptionChange(event){
       this.setState({description: event.target.value});
-      console.log(this.state.description);
   }
 
   handleTimeChange(event){
       this.setState({timeLimit: event.target.value});
-      console.log(event.target.value);
   }
 
   render() {
+    if(localStorage.getItem('user' == undefined)) {
+      this.props.history.push("/login")
+    }
     return (
       <Container>
+        <Map
+          google={this.props.google}
+          zoom={12}
+          className={"map"}
+          center={{ lat: this.state.currentLat, lng: this.state.currentLng }}
+          style={mapStyles}
+          onClick={this.onClick}
+        >
+        <Marker title="Current Location" name="Current Location" position={{lat: this.state.currentLat, lng: this.state.currentLng}} onClick={this.onMarkerClick}/>
+        <Marker title="New GeoCache Location" name="New Geocache Location" position={{lat: this.state.newLat, lng: this.state.newLng}} onClick={this.onMarkerClick}/>
+        <InfoWindow marker={this.state.activeMarker} visible={this.state.showingInfoWindow}onClose={this.onClose} >
+        {this.state.selectedPlace.title == "Current Location" ? <div><h4>Current Location</h4></div> :
         <Form onSubmit={this.handleSubmit}>
             <h1>
-                <span className={"font-weight-bold"}>Compass Login</span>
+                <span className={"font-weight-bold"}>Add new GeoCache</span>
             </h1>
             <Row className={"accountRows"}>
                 <Col >
@@ -172,21 +181,7 @@ class CreateGeoCacheComponent extends Component {
                     <Button variant="success" >Submit</Button>
                 </Col>
             </Row>
-        </Form>
-        <Map
-          google={this.props.google}
-          zoom={12}
-          className={"map"}
-          center={{ lat: this.state.currentLat, lng: this.state.currentLng }}
-          style={mapStyles}
-          onClick={this.onClick}
-        >
-        <Marker title="Current Location" name="Current Location" position={{lat: this.state.currentLat, lng: this.state.currentLng}} onClick={this.onMarkerClick}/>
-        <Marker title="New GeoCache Location" name="New Geocache Location" position={{lat: this.state.newLat, lng: this.state.newLng}} onClick={this.onMarkerClick}/>
-        <InfoWindow marker={this.state.activeMarker} visible={this.state.showingInfoWindow}onClose={this.onClose} >
-          <div>
-            <h4>{this.state.selectedPlace.name}</h4>
-          </div>
+        </Form> }
         </InfoWindow>
         </Map>
       </Container>

@@ -30,12 +30,12 @@ public class UserController {
         return ResponseEntity.ok("No Users");
     }
     */
-    @CrossOrigin("http://localhost:3000/login")
-    @RequestMapping(method = RequestMethod.GET,value = "/users/{username}/{password}",
+    //@CrossOrigin("http://localhost:3000/login")
+    @RequestMapping(method = RequestMethod.GET,value = "/users/{username}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map getUser(@PathVariable String username, @PathVariable String password){
+    public Map getUser(@PathVariable String username){
         System.out.println("inside getUser...");
-        User user = userRepo.findByUsernameAndPassword(username, password);
+        User user = userRepo.findByUsername(username);
         Map response = new HashMap();
         response.put("user", user); //.toString()
         response.put("userID",user.getId().toString());
@@ -43,7 +43,7 @@ public class UserController {
         return response;
     }
 
-    //@CrossOrigin("http://localhost:3000/login-secure")
+
     @RequestMapping(method = RequestMethod.POST,value = "/secure-login",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Map loginSecure(@RequestBody Map obj){
@@ -75,5 +75,18 @@ public class UserController {
         System.out.println(result);
         return ResponseEntity.created(new URI("api/user" + result.getUsername()))
                 .body(result);
+    }
+
+    @CrossOrigin("http://localhost:3000/create-geocache")
+    @RequestMapping(method = RequestMethod.POST, value = "/user/seeking/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map updateSeeking(@PathVariable String username, @RequestBody String json) {
+        System.out.println("------------------");
+        User found = userRepo.findByUsername(username);
+        found.setSeeking(json);
+        System.out.println(found.getSeeking());
+        User result = userRepo.save(found);
+        Map response = new HashMap();
+        response.put("seeking", result.getSeeking());
+        return response;
     }
 }
