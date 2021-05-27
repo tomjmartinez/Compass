@@ -12,11 +12,12 @@ public interface GeoCacheRepo extends MongoRepository<GeoCache, ObjectId> {
     List<GeoCache> findAllByGifter(ObjectId gifter);
     List<GeoCache> findAllByGifter(String gifter);
 
+    GeoCache findById(String id);
+
     @Query("{$or: [{'finder': null}, {'finder': ''}, {'finder': {$exists: false}}]}")
     List<GeoCache> findAvail();
 
     @Query("{location : {$near: {$geometry: {type: 'Point', coordinates: [?0, ?1] } }}}")
     List<GeoCache> findNear(double lon, double lat);
-
 
 }

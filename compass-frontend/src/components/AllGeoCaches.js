@@ -1,6 +1,7 @@
 import axios from "axios"
 import React, { Component } from "react"
 import GeoCachesTable from "./GeoCachesTable"
+import GeoCachesCheckout from "./GeoCachesCheckout"
 import "../styles/geostyles.css"
 import MapComponent from "./MapComponent"
 
@@ -10,23 +11,30 @@ class AllGeoCaches extends Component{
     constructor(){
         super()
         this.state = {
-            allGeoCaches : []
+            allGeoCaches : [],
+            geoids : []
         }
     }
 
     componentDidMount(){
         axios.get("http://localhost:8000/my-app/api/all-geocaches")
             .then(response =>{
-                this.setState({allGeoCaches: response.data})
+                
+                this.setState({allGeoCaches: response.data.geocaches})
+                this.setState({geoids: response.data.geoids})
+                console.log(this.state)
             })
             .catch()
     }
 
     render(){
         const {allGeoCaches} = this.state;
-
+        //const {geoids} = this.state.geoids;
         return (
-            <MapComponent geoCaches={this.state.allGeoCaches} />
+            <div>
+                {/*<MapComponent geoCaches={this.state.allGeoCaches} />*/}
+                <GeoCachesCheckout geoCaches={allGeoCaches} geoids={this.state.geoids}/>
+            </div>
         )
     }
 }
