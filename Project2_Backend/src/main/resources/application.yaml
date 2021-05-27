@@ -1,10 +1,8 @@
 spring:
     data:
         mongodb:
-            #uri: mongodb+srv://user:uqVZ2SEpjEx7d8k@cluster0.32jir.mongodb.net/compass?retryWrites=true&w=majority
-            #database: compass
-            uri: mongodb://compass.user:developmentpassword@localhost:27017/?authSource=compass&readPreference=primary&appname=MongoDB%20Compass&ssl=false
-            database: compasslocal
+            uri: mongodb+srv://user:uqVZ2SEpjEx7d8k@cluster0.32jir.mongodb.net/compass?retryWrites=true&w=majority
+            database: compass
 
 server:
     port: 8000
