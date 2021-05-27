@@ -30,7 +30,7 @@ public class UserController {
         return ResponseEntity.ok("No Users");
     }
     */
-    @CrossOrigin("http://localhost:3000/login")
+    //@CrossOrigin("http://localhost:3000/login")
     @RequestMapping(method = RequestMethod.GET,value = "/users/{username}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Map getUser(@PathVariable String username){
@@ -43,7 +43,7 @@ public class UserController {
         return response;
     }
 
-    //@CrossOrigin("http://localhost:3000/login-secure")
+
     @RequestMapping(method = RequestMethod.POST,value = "/secure-login",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Map loginSecure(@RequestBody Map obj){
