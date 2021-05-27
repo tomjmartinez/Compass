@@ -6,13 +6,17 @@ import "../styles/geostyles.css"
 
 class GeoCachesCheckout extends React.Component {
     constructor(props){
-        super()
+        super(props)
+        console.log(this.props)
         this.state = {
             
         }
+        this.handleCheckout = this.handleCheckout.bind(this);
     }
 
-    handleCheckout(value){
+    handleCheckout(event){
+        event.preventDefault();
+
         const config = {
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -20,24 +24,25 @@ class GeoCachesCheckout extends React.Component {
             }
           }
     
-          const form = {
-            //insert current user id here
-            coordinates: [this.state.newLat, this.state.newLng],
-            // mysteryFlag: this.state.mysteryFlag,
-            description: this.state.description,
-            timeLimit: this.state.timeLimit,
-            gifter: localStorage.getItem('currentUser')
+          const checkout = {
+            checkingOut: this.props.geoids[event.target.value],
+            currentUser: localStorage.getItem("currentUser")
           }
 
-        axios.post(`http://localhost:8000/my-app/api/newGeoCache`, form, config ).then(res => {
-            axios.post('http://localhost:8000/my-app/api/user/seeking/' + localStorage.getItem('username'),
-                res.data, config).then(result => console.log(result.data)
-            )
-        })
+        axios.post(`http://localhost:8000/my-app/api/checkout-geocache`, checkout, config )
+            .then(res => {
+                console.log(res.data)
+                if(res.data != "false"){
+                    axios.post('http://localhost:8000/my-app/api/user/seeking/' + localStorage.getItem('username'),
+                        res.data, config).then(result => console.log(result.data)
+                    )
+                }
+            })
     }
 
     render(){
         const geoCaches = this.props.geoCaches
+        const geoids = this.props.geoids
         let counter = 0;
         return (
             <div>
@@ -69,7 +74,7 @@ class GeoCachesCheckout extends React.Component {
                                     <td>| {gc.finder}  </td>
                                     <td>| {gc.found}  </td>
                                     <td>| {gc.timeLimit}</td>
-                                    <button className="checkout-geo" onClick={this.handleCheckout(counter)} value={counter++}>Checkout</button>
+                                    <button className="checkout-geo" onClick={this.handleCheckout} value={counter++}>Checkout</button>
                                 </tr>
 
                             )

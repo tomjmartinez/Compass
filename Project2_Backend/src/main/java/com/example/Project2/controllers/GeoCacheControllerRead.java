@@ -4,6 +4,7 @@ import com.example.Project2.models.GeoCache;
 import com.example.Project2.models.User;
 import com.example.Project2.repos.GeoCacheRepo;
 import org.bson.types.ObjectId;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +37,20 @@ public class GeoCacheControllerRead {
     }
 
     @RequestMapping(value = "/all-geocaches", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<GeoCache> readAllGeoCaches(){
-        System.out.println("inside readallGeocaches.");
-        List<GeoCache> results = geoCacheRepo.findAll();
-        System.out.println(results.toString());
+    public Map readAllGeoCaches(){
+        ArrayList<GeoCache> results = (ArrayList<GeoCache>) geoCacheRepo.findAll();
+
+        ArrayList<String> resultIds = new ArrayList<String>();
+        for(int i = 0; i < results.size(); i++){
+            resultIds.add(results.get(i).getId().toString());
+        }
+
+        Map listPack = new HashMap();
+        listPack.put("geocaches", results);
+        listPack.put("geoids", resultIds);
+
         log.debug("reading all geocaches."); //get session or current user
-        return results;
+        return listPack;
     }
 
     @RequestMapping(value = "/avail-geocaches", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -60,5 +69,33 @@ public class GeoCacheControllerRead {
 
         log.debug("populating nearby geocaches from " + lon + " " + lat);
         return nearGeos;
+    }
+
+    @RequestMapping(method = RequestMethod.POST,value = "/checkout-geocache", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public String updateGeoCaches(@RequestBody Map obj){
+        System.out.println("this is the json obj" + obj.toString());
+        String success = "false";
+
+        try {
+            String checkingOut = (String) obj.get("checkingOut");
+            System.out.println("checkingOut is: " + checkingOut);
+            String currentUser = (String) obj.get("currentUser");
+
+            ObjectId finder = new ObjectId(checkingOut);
+            GeoCache geo2Update = geoCacheRepo.findById(checkingOut);
+
+            geo2Update.setFinder(currentUser);
+            geoCacheRepo.save(geo2Update);
+
+            System.out.println(checkingOut);
+            success = checkingOut;
+            log.debug("updated geocache " + checkingOut + " checkout to " + currentUser);
+        }catch(Exception e) {
+            success = "false";
+        }
+
+
+        return success;
     }
 }

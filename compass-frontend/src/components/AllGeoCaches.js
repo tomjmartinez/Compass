@@ -11,26 +11,29 @@ class AllGeoCaches extends Component{
     constructor(){
         super()
         this.state = {
-            allGeoCaches : []
+            allGeoCaches : [],
+            geoids : []
         }
     }
 
     componentDidMount(){
         axios.get("http://localhost:8000/my-app/api/all-geocaches")
             .then(response =>{
-                console.log(response.data)
-                this.setState({allGeoCaches: response.data})
+                
+                this.setState({allGeoCaches: response.data.geocaches})
+                this.setState({geoids: response.data.geoids})
+                console.log(this.state)
             })
             .catch()
     }
 
     render(){
         const {allGeoCaches} = this.state;
-
+        //const {geoids} = this.state.geoids;
         return (
             <div>
-                <GeoCachesCheckout geoCaches={allGeoCaches} />
-                <MapComponent geoCaches={this.state.allGeoCaches} />
+                {/*<MapComponent geoCaches={this.state.allGeoCaches} />*/}
+                <GeoCachesCheckout geoCaches={allGeoCaches} geoids={this.state.geoids}/>
             </div>
         )
     }
