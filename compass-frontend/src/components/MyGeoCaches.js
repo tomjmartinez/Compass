@@ -18,11 +18,13 @@ class MyGeoCaches extends Component{
         axios.get("http://localhost:8000/my-app/api/my-geocaches/" + localStorage.getItem("currentUser"))
             .then(response =>{
                 this.setState({myGeoCaches: response.data})
+                console.log(response.data)
             })
             .catch()
     }
 
     render(){
+        console.log(this.state)
         const {myGeoCaches} = this.state
         return (
             <MapComponent geoCaches={this.state.myGeoCaches} />
