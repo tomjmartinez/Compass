@@ -13,16 +13,22 @@ const mapStyles = {
 class MapComponent extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       currentLat: 34,
       currentLng: -118,
       selectedPlace: props,
       activeMarker: props,
       showingInfoWindow: true,
-      markers: [],
-      testMarkers: props.geoCaches || []
+      markers: [
+        {
+          title: "Test",
+          name: "Test",
+          position: {lat: 34, lng: -118}
+        }
+      ],
+      testMarkers: this.props.geoCaches.caches
     };
-    this.onClick = this.onClick.bind(this);
   }
 
   componentDidMount() {
@@ -70,27 +76,9 @@ class MapComponent extends Component {
     }, 60000)
   }
 
-  onLoad() {
-    
-  }
-
-  onClick(t, map, coord) {
-    const { latLng } = coord;
-    const lat = latLng.lat();
-    const lng = latLng.lng();
-
-    this.setState(previousState => {
-      return {
-        markers: [
-          ...previousState.markers,
-          {
-            title: "",
-            name: "",
-            position: { lat, lng }
-          }
-        ]
-      };
-    });
+  handleCheckout = (event) =>{
+    console.log(event)
+    this.props.geoCaches.handleCheckout(event);
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -98,6 +86,8 @@ class MapComponent extends Component {
       selectedPlace: props,
       activeMarker: marker,
       showingInfoWindow: true,
+      currentLat: marker.position.lat(),
+      currentLng: marker.position.lng()
     });
   }
 
@@ -117,15 +107,17 @@ class MapComponent extends Component {
     const newMarkers = [];
     this.state.testMarkers.forEach((marker) => (
       newMarkers.push({
-        title: marker.description,
-        name: marker.description,
-        gifter: marker.gifter,
-        position: {lat: marker.location.y, lng: marker.location.x},
+        id: marker.id,
+        title: marker.cache.description,
+        name: marker.cache.description,
+        gifter: marker.cache.gifter,
+        finder: marker.cache.finder,
+        timeLimit: marker.cache.timeLimit,
+        position: {lat: marker.cache.location.y, lng: marker.cache.location.x},
       })
     ))
     this.setState(previousState => {
       return {
-        currentLat: -90,
         markers: newMarkers,
         testMarkers: []
       };
@@ -134,19 +126,24 @@ class MapComponent extends Component {
 
   render() {
     this.fixMarkers();
+    console.log(this.state.activeMarker)
     return (
+      <div>
+      <button onClick={this.handleCheckout.bind(this)} value={this.state.activeMarker.id}>Checkout</button>
       <Map
         google={this.props.google}
         zoom={12}
         className={"map"}
         center={{ lat: this.state.currentLat, lng: this.state.currentLng }}
         style={mapStyles}
-        onClick={this.onClick}
       >
         {this.state.markers.map((marker) => (
             <Marker
+              id={marker.id}
               title={marker.title}
               name={marker.name}
+              gifter={marker.gifter}
+              timeLimit={marker.timeLimit}
               position={marker.position}
               onClick={this.onMarkerClick}
             />
@@ -154,13 +151,18 @@ class MapComponent extends Component {
         <InfoWindow
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}
+          onClick={this.handleCheckout}
           onClose={this.onClose}
         >
           <div>
             <h4>{this.state.selectedPlace.name}</h4>
+            {this.state.selectedPlace.timeLimit ? <p>Time Limit: {this.state.selectedPlace.timeLimit} </p> : <p></p>}
+            {this.state.selectedPlace.gifter ? <p>Gifted By: {this.state.selectedPlace.gifter} </p> : <p></p>}
+            {this.state.selectedPlace.finder ? <p>Found By: {this.state.selectedPlace.finder} </p> : <p></p>}
           </div>
         </InfoWindow>
       </Map>
+      </div>
     );
   }
 }
