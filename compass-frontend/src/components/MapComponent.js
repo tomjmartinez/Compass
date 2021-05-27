@@ -22,7 +22,6 @@ class MapComponent extends Component {
       markers: [],
       testMarkers: props.geoCaches || []
     };
-    this.onClick = this.onClick.bind(this);
   }
 
   componentDidMount() {
@@ -70,34 +69,13 @@ class MapComponent extends Component {
     }, 60000)
   }
 
-  onLoad() {
-    
-  }
-
-  onClick(t, map, coord) {
-    const { latLng } = coord;
-    const lat = latLng.lat();
-    const lng = latLng.lng();
-
-    this.setState(previousState => {
-      return {
-        markers: [
-          ...previousState.markers,
-          {
-            title: "",
-            name: "",
-            position: { lat, lng }
-          }
-        ]
-      };
-    });
-  }
-
   onMarkerClick = (props, marker, e) => {
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
       showingInfoWindow: true,
+      currentLat: marker.position.lat(),
+      currentLng: marker.position.lng()
     });
   }
 
@@ -120,6 +98,8 @@ class MapComponent extends Component {
         title: marker.description,
         name: marker.description,
         gifter: marker.gifter,
+        finder: marker.finder,
+        timeLimit: marker.timeLimit,
         position: {lat: marker.location.y, lng: marker.location.x},
       })
     ))
@@ -147,6 +127,8 @@ class MapComponent extends Component {
             <Marker
               title={marker.title}
               name={marker.name}
+              gifter={marker.gifter}
+              timeLimit={marker.timeLimit}
               position={marker.position}
               onClick={this.onMarkerClick}
             />
@@ -158,6 +140,9 @@ class MapComponent extends Component {
         >
           <div>
             <h4>{this.state.selectedPlace.name}</h4>
+            {this.state.selectedPlace.timeLimit ? <p>Time Limit: {this.state.selectedPlace.timeLimit} </p> : <p></p>}
+            {this.state.selectedPlace.gifter ? <p>Gifted By: {this.state.selectedPlace.gifter} </p> : <p></p>}
+            {this.state.selectedPlace.finder ? <p>Found By: {this.state.selectedPlace.finder} </p> : <p></p>}
           </div>
         </InfoWindow>
       </Map>
