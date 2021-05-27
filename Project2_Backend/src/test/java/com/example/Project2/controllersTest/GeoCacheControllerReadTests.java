@@ -2,6 +2,8 @@ package com.example.Project2.controllersTest;
 
 import com.example.Project2.models.GeoCache;
 import com.example.Project2.repos.GeoCacheRepo;
+import org.bson.types.ObjectId;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,74 +25,43 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(value= GeoCacheControllerRead.class)
-@ContextConfiguration(classes = GeoCacheControllerRead.class)
+
 public class GeoCacheControllerReadTests {
-    //Mockito mocks = new Mockito();
 
-    @Autowired
-    private MockMvc mockMvc;
+    private GeoCacheRepo geoCacheRepo = Mockito.mock(GeoCacheRepo.class);
 
-    @MockBean
-    private GeoCacheControllerRead geoController;
-
-    @MockBean
-    private GeoCacheRepo geoCacheRepo;
-
-    @Before
-    public void createMocks() {
-        GeoCache geo1 = new GeoCache();
-        GeoCache geo2 = new GeoCache();
-        ArrayList<GeoCache> mockGeoList = new ArrayList<GeoCache>();
-        mockGeoList.add(geo1);
-        mockGeoList.add(geo2);
-
-        ArrayList geoids = new ArrayList<String>();
-        geoids.add("geo1");
-        geoids.add("geo2");
-
-        Map geoData = new HashMap<>();
-        geoData.put("geocaches",mockGeoList);
-        geoData.put("geoids", geoids);
-    }
+    private GeoCacheControllerRead geoController = new GeoCacheControllerRead(geoCacheRepo);
 
     @Test
-    public void testingReadGeos() throws Exception {
+    public void testAllGeos() {
         GeoCache geo1 = new GeoCache();
-        GeoCache geo2 = new GeoCache();
+        ObjectId geoid1 = new ObjectId("60aaba9c761ccc0d2edc42e9");
+        geo1.setId(geoid1);
+
         ArrayList<GeoCache> mockGeoList = new ArrayList<GeoCache>();
         mockGeoList.add(geo1);
-        mockGeoList.add(geo2);
-
-        ArrayList geoids = new ArrayList<String>();
-        geoids.add("geo1");
-        geoids.add("geo2");
-
-        Map geoData = new HashMap<>();
-        geoData.put("geocaches",mockGeoList);
-        geoData.put("geoids", geoids);
 
         Mockito.when(
                 geoCacheRepo.findAll()).thenReturn(mockGeoList);
+        Map expected = new HashMap();
 
-        Mockito.when(
-                geoController.readAllGeoCaches()).thenReturn(geoData);
+        Map mapFound = geoController.readAllGeoCaches();
 
-        RequestBuilder rb = MockMvcRequestBuilders.get(
-                "/my-app/api/all-geocaches").accept(MediaType.APPLICATION_JSON);
+        ArrayList<String> resu = new ArrayList<String>();
+        resu.add("60aaba9c761ccc0d2edc42e9");
 
-        MvcResult result = mockMvc.perform(rb).andReturn();
+        expected.put("geocaches", mockGeoList);
+        expected.put("geoids", resu);
 
-        System.out.println("tj's response reads:" + result.getResponse().getContentAsString());
-        String expected1 = "";
+        System.out.println(expected.toString());
+        System.out.println(mapFound.toString());
 
-        JSONAssert.assertEquals(expected1, result.getResponse().getContentAsString(), false);
-
+        Assert.assertEquals("not valid", expected.toString(), mapFound.toString());
     }
 }

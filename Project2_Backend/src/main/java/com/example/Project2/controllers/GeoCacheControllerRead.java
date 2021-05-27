@@ -25,6 +25,10 @@ import java.util.Map;
 public class GeoCacheControllerRead {
     private final Logger log = LoggerFactory.getLogger(GeoCacheControllerRead.class);
 
+    public GeoCacheControllerRead(GeoCacheRepo geoCacheRepo){
+        this.geoCacheRepo = geoCacheRepo;
+    }
+
     @Autowired
     private GeoCacheRepo geoCacheRepo;// = null;
 
