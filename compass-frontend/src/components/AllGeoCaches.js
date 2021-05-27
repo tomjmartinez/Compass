@@ -12,28 +12,66 @@ class AllGeoCaches extends Component{
         super()
         this.state = {
             allGeoCaches : [],
-            geoids : []
+            geoids : [],
+            test: []
         }
+    }
+
+    handleCheckout(event){
+        console.log(event.target.value)
+        event.preventDefault();
+        const config = {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            }
+          }
+    
+          const checkout = {
+            checkingOut: event.target.value,
+            currentUser: localStorage.getItem("currentUser")
+          }
+
+        axios.post(`http://localhost:8000/my-app/api/checkout-geocache`, checkout, config )
+            .then(res => {
+                console.log(res.data)
+                if(res.data){
+                    axios.post('http://localhost:8000/my-app/api/user/seeking/' + localStorage.getItem('username'),
+                    checkout.checkingOut, config).then(result => console.log(result.data)
+                )
+                }
+            })
     }
 
     componentDidMount(){
         axios.get("http://localhost:8000/my-app/api/all-geocaches")
             .then(response =>{
-                
                 this.setState({allGeoCaches: response.data.geocaches})
                 this.setState({geoids: response.data.geoids})
-                console.log(this.state)
+                for(let i = 0; i < this.state.allGeoCaches.length; i++){
+                    this.setState(previousState => {
+                        return {
+                          test: [
+                            ...previousState.test,
+                            {
+                                cache: previousState.allGeoCaches[i],
+                                id: previousState.geoids[i]
+                            }
+                          ]
+                        };
+                      });
+                }
             })
             .catch()
     }
 
     render(){
-        const {allGeoCaches} = this.state;
-        //const {geoids} = this.state.geoids;
+        const testing = {caches: this.state.test, handleCheckout: this.handleCheckout}
         return (
             <div>
-                {/*<MapComponent geoCaches={this.state.allGeoCaches} />*/}
-                <GeoCachesCheckout geoCaches={allGeoCaches} geoids={this.state.geoids}/>
+                <p>Select marker then hit checkout to select which marker to find</p>
+                <MapComponent geoCaches={testing} />
+                {/* <GeoCachesCheckout geoCaches={allGeoCaches} geoids={this.state.geoids}/> */}
             </div>
         )
     }

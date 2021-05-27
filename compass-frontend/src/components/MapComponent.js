@@ -13,14 +13,21 @@ const mapStyles = {
 class MapComponent extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       currentLat: 34,
       currentLng: -118,
       selectedPlace: props,
       activeMarker: props,
       showingInfoWindow: true,
-      markers: [],
-      testMarkers: props.geoCaches || []
+      markers: [
+        {
+          title: "Test",
+          name: "Test",
+          position: {lat: 34, lng: -118}
+        }
+      ],
+      testMarkers: this.props.geoCaches.caches
     };
   }
 
@@ -69,6 +76,11 @@ class MapComponent extends Component {
     }, 60000)
   }
 
+  handleCheckout = (event) =>{
+    console.log(event)
+    this.props.geoCaches.handleCheckout(event);
+  }
+
   onMarkerClick = (props, marker, e) => {
     this.setState({
       selectedPlace: props,
@@ -95,17 +107,17 @@ class MapComponent extends Component {
     const newMarkers = [];
     this.state.testMarkers.forEach((marker) => (
       newMarkers.push({
-        title: marker.description,
-        name: marker.description,
-        gifter: marker.gifter,
-        finder: marker.finder,
-        timeLimit: marker.timeLimit,
-        position: {lat: marker.location.y, lng: marker.location.x},
+        id: marker.id,
+        title: marker.cache.description,
+        name: marker.cache.description,
+        gifter: marker.cache.gifter,
+        finder: marker.cache.finder,
+        timeLimit: marker.cache.timeLimit,
+        position: {lat: marker.cache.location.y, lng: marker.cache.location.x},
       })
     ))
     this.setState(previousState => {
       return {
-        currentLat: -90,
         markers: newMarkers,
         testMarkers: []
       };
@@ -114,17 +126,20 @@ class MapComponent extends Component {
 
   render() {
     this.fixMarkers();
+    console.log(this.state.activeMarker)
     return (
+      <div>
+      <button onClick={this.handleCheckout.bind(this)} value={this.state.activeMarker.id}>Checkout</button>
       <Map
         google={this.props.google}
         zoom={12}
         className={"map"}
         center={{ lat: this.state.currentLat, lng: this.state.currentLng }}
         style={mapStyles}
-        onClick={this.onClick}
       >
         {this.state.markers.map((marker) => (
             <Marker
+              id={marker.id}
               title={marker.title}
               name={marker.name}
               gifter={marker.gifter}
@@ -136,6 +151,7 @@ class MapComponent extends Component {
         <InfoWindow
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}
+          onClick={this.handleCheckout}
           onClose={this.onClose}
         >
           <div>
@@ -146,6 +162,7 @@ class MapComponent extends Component {
           </div>
         </InfoWindow>
       </Map>
+      </div>
     );
   }
 }
