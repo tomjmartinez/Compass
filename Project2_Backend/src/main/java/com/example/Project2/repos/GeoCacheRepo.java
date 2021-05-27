@@ -20,4 +20,6 @@ public interface GeoCacheRepo extends MongoRepository<GeoCache, ObjectId> {
     @Query("{location : {$near: {$geometry: {type: 'Point', coordinates: [?0, ?1] } }}}")
     List<GeoCache> findNear(double lon, double lat);
 
+    @Query("{finder: {$eq: ?0}}")
+    GeoCache findByFinder(String currentUser);
 }

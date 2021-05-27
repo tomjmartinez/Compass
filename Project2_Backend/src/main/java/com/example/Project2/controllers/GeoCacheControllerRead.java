@@ -74,27 +74,34 @@ public class GeoCacheControllerRead {
     @RequestMapping(method = RequestMethod.POST,value = "/checkout-geocache", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public String updateGeoCaches(@RequestBody Map obj){
-        System.out.println("this is the json obj" + obj.toString());
         String success = "false";
 
+        String checkingOut = (String) obj.get("checkingOut");
+        String currentUser = (String) obj.get("currentUser");
+
         try {
-            String checkingOut = (String) obj.get("checkingOut");
-            System.out.println("checkingOut is: " + checkingOut);
-            String currentUser = (String) obj.get("currentUser");
+            GeoCache geo2RemoveFinder = geoCacheRepo.findByFinder(currentUser);
+            System.out.println("find by finder: " + geo2RemoveFinder);
+            if(geo2RemoveFinder != null) {
+                geo2RemoveFinder.setFinder(null);
+                System.out.println("to remove" + geo2RemoveFinder);
+                geoCacheRepo.save(geo2RemoveFinder);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
-            ObjectId finder = new ObjectId(checkingOut);
             GeoCache geo2Update = geoCacheRepo.findById(checkingOut);
-
             geo2Update.setFinder(currentUser);
             geoCacheRepo.save(geo2Update);
 
-            System.out.println(checkingOut);
+
+        if(geo2Update != null) {
             success = checkingOut;
             log.debug("updated geocache " + checkingOut + " checkout to " + currentUser);
-        }catch(Exception e) {
+        } else {
             success = "false";
         }
-
 
         return success;
     }
