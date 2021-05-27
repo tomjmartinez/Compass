@@ -19,17 +19,14 @@ class AllGeoCaches extends Component{
     componentDidMount(){
         axios.get("http://localhost:8000/my-app/api/all-geocaches")
             .then(response =>{
-                
                 this.setState({allGeoCaches: response.data.geocaches})
                 this.setState({geoids: response.data.geoids})
-                console.log(this.state)
             })
             .catch()
     }
 
     render(){
         const {allGeoCaches} = this.state;
-        //const {geoids} = this.state.geoids;
         return (
             <div>
                 {/*<MapComponent geoCaches={this.state.allGeoCaches} />*/}

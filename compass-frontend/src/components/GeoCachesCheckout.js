@@ -34,7 +34,7 @@ class GeoCachesCheckout extends React.Component {
                 console.log(res.data)
                 if(res.data != "false"){
                     axios.post('http://localhost:8000/my-app/api/user/seeking/' + localStorage.getItem('username'),
-                        res.data, config).then(result => console.log(result.data)
+                        checkout.checkingOut, config).then(result => console.log(result.data)
                     )
                 }
             })
