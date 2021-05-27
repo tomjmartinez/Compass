@@ -54,10 +54,19 @@ public class GeoCacheControllerRead {
     }
 
     @RequestMapping(value = "/avail-geocaches", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<GeoCache> readAvailableGeoCaches(){
+    public Map readAvailableGeoCaches(){
         List<GeoCache> avail = geoCacheRepo.findAvail();
+
+        ArrayList<String> resultIds = new ArrayList<String>();
+        for(int i = 0; i < avail.size(); i++){
+            resultIds.add(avail.get(i).getId().toString());
+        }
+
+        Map listPack = new HashMap();
+        listPack.put("geocaches", avail);
+        listPack.put("geoids", resultIds);
         log.debug("reading all available geocaches."); //get session or current user
-        return avail;
+        return listPack;
     }
 
     @RequestMapping(method = RequestMethod.POST,value = "/near-geocaches",
@@ -81,10 +90,8 @@ public class GeoCacheControllerRead {
 
         try {
             GeoCache geo2RemoveFinder = geoCacheRepo.findByFinder(currentUser);
-            System.out.println("find by finder: " + geo2RemoveFinder);
             if(geo2RemoveFinder != null) {
                 geo2RemoveFinder.setFinder(null);
-                System.out.println("to remove" + geo2RemoveFinder);
                 geoCacheRepo.save(geo2RemoveFinder);
             }
         }catch(Exception e){
@@ -101,6 +108,7 @@ public class GeoCacheControllerRead {
             log.debug("updated geocache " + checkingOut + " checkout to " + currentUser);
         } else {
             success = "false";
+            log.debug("failed to update geocache " + checkingOut + " checkout to " + currentUser);
         }
 
         return success;
