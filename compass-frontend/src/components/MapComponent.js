@@ -20,14 +20,8 @@ class MapComponent extends Component {
       selectedPlace: props,
       activeMarker: props,
       showingInfoWindow: true,
-      markers: [
-        {
-          title: "Test",
-          name: "Test",
-          position: {lat: 34, lng: -118}
-        }
-      ],
-      testMarkers: this.props.geoCaches.caches
+      markers: [],
+      testMarkers: this.props.geoCaches ? this.props.geoCaches.caches : []
     };
   }
 
@@ -101,6 +95,9 @@ class MapComponent extends Component {
   };
 
   fixMarkers() {
+    if(this.state.testMarkers == undefined) {
+      return;
+    }
     if(this.state.testMarkers.length == 0) {
       return;
     }
@@ -125,11 +122,13 @@ class MapComponent extends Component {
   }
 
   render() {
-    this.fixMarkers();
+    if(typeof this.state.testMarkers != undefined) {
+      this.fixMarkers();
+    }
     console.log(this.state.activeMarker)
     return (
       <div>
-      <button onClick={this.handleCheckout.bind(this)} value={this.state.activeMarker.id}>Checkout</button>
+      <button onClick={this.handleCheckout.bind(this)} value={this.state.activeMarker == null ? "" : this.state.activeMarker.id}>Checkout</button>
       <Map
         google={this.props.google}
         zoom={12}
