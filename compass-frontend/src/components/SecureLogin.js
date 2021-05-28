@@ -24,6 +24,11 @@ class SecureLogin  extends React.Component{
     handleSubmit(event){
         event.preventDefault();
 
+        localStorage.setItem("username", "");
+        localStorage.setItem("password", "");
+        localStorage.setItem("currentUser", "");
+        localStorage.setItem("seeking", "")
+
         const addStorage = (username, password, id) => {
             localStorage.setItem("username",username);
             localStorage.setItem("password",password);
@@ -44,9 +49,11 @@ class SecureLogin  extends React.Component{
                 password: this.state.password
             }, config)
             .then(res => {
-                addStorage(res.data.user.username, res.data.user.password, res.data.userId); //try/catch needed
+                addStorage(res.data.user.username, res.data.user.password, res.data.userID)
                 this.handleInvalidLogin();
-                this.handleNextPath("/home");
+                if(this.state.error != "error") {
+                    this.handleNextPath("/home")
+                }
             })
             .catch();
     }

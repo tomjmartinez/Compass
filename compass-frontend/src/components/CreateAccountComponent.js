@@ -33,6 +33,7 @@ class CreateAccountComponent extends React.Component{
         ,)
             .then(res => {
             })
+        this.props.history.push("/login");
     }
     handleUsernameChange(event){
         this.setState({username: event.target.value});

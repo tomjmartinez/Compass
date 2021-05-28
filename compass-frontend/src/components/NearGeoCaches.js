@@ -56,7 +56,11 @@ class NearGeoCaches extends Component{
                 this.setState({nearGeoCaches: response.data.geocaches})
                 this.setState({geoids: response.data.geoids})
                 for(let i = 0; i < this.state.nearGeoCaches.length || i < 5; i++){
+                    if(this.state.nearGeoCaches[i].gifter == localStorage.getItem("currentUser")) {
+                        continue;
+                    }
                     this.setState(previousState => {
+                        // if(previousState.nearGeoCaches[i].gifter != localStorage.getItem())
                         return {
                           test: [
                             ...previousState.test,

@@ -19,6 +19,11 @@ class LoginComponent  extends React.Component{
     handleSubmit(event){
         event.preventDefault();
 
+        localStorage.setItem("username", "");
+        localStorage.setItem("password", "");
+        localStorage.setItem("currentUser", "");
+        localStorage.setItem("seeking", "")
+
         const addStorage = (username, password, id) => {
             localStorage.setItem("username",username);
             localStorage.setItem("password",password);
@@ -35,10 +40,11 @@ class LoginComponent  extends React.Component{
 
         axios.get(`http://localhost:8000/my-app/api/users/${this.state.username}`, config)
             .then(res => {
-
-                addStorage(res.data.user.username, res.data.user.password, res.data.id)
+                addStorage(res.data.user.username, res.data.user.password, res.data.userID)
 
             });
+        console.log(this.props.history)
+        this.handleNextPath("/home")
     }
     handleNextPath(path){
         this.props.history.push(path);

@@ -8,8 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.*;
 
-/** this is using jdk11
- * 
+/**
+ * Represents the GeoCache
  */
 @Data
 @Document(collection="geocachesGJ")

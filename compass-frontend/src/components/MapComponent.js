@@ -63,17 +63,17 @@ class MapComponent extends Component {
     }
     axios.get("http://localhost:8000/my-app/api/geocache/" + localStorage.getItem("seeking"), config)
     .then(response => {
-
-      this.setState(previousState => {
-        return {
-          seeking: {
-            title: response.data.description,
-            name: response.data.description,
-            position: { lat: response.data.location.y, lng: response.data.location.x}
-          }
-        };
-      });
-      
+      if(response.data != "") {
+        this.setState(previousState => {
+          return {
+            seeking: {
+              title: response.data.description,
+              name: response.data.description,
+              position: { lat: response.data.location.y, lng: response.data.location.x}
+            }
+          };
+        });
+      }
       })
   }
 

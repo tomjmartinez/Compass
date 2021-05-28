@@ -17,32 +17,6 @@ class AllGeoCaches extends Component{
         }
     }
 
-    handleCheckout(event){
-
-        event.preventDefault();
-        const config = {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json'
-            }
-          }
-    
-          const checkout = {
-            checkingOut: event.target.value,
-            currentUser: localStorage.getItem("currentUser")
-          }
-
-        axios.post(`http://localhost:8000/my-app/api/checkout-geocache`, checkout, config )
-            .then(res => {
-
-                if(res.data){
-                    axios.post('http://localhost:8000/my-app/api/user/seeking/' + localStorage.getItem('username'),
-                    checkout.checkingOut, config).then(result => localStorage.setItem('seeking', result.data.seeking)
-                )
-                }
-            })
-    }
-
     handleNextPath(path){
 
         this.props.history.push(path);
