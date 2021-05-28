@@ -35,12 +35,16 @@ class HomeComponent extends React.Component {
                     </Button>
                 </Row>
                 <Row>
+                    <Button className={"btn-near-caches"} onClick={()=>this.handleChangePath('/near-geocaches')}> View Near Caches</Button>
+                </Row>
+                <Row>
                     <Col>
                         <div className={"mapWindow"}>
                             <MapComponent/>
                         </div>
                     </Col>
                 </Row>
+
 
             </Container>
         )

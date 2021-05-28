@@ -7,12 +7,11 @@ import MyGeoCaches from "./components/MyGeoCaches";
 import AllGeoCaches from "./components/AllGeoCaches";
 import AvailGeoCaches from "./components/AvailGeoCaches";
 import SecureLogin from "./components/SecureLogin";
-
 import NearGeoCaches from "./components/NearGeoCaches";
 import CreateGeoCache from "./components/CreateGeoCacheComponent";
-
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import CreateGeoCacheComponent from "./components/CreateGeoCacheComponent";
+import MapComponent from "./components/MapComponent";
 
 
 class App extends React.Component{
