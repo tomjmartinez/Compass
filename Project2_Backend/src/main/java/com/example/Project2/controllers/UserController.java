@@ -64,6 +64,7 @@ public class UserController {
             response.put("user", user); //.toString()
             response.put("userID", user.getId().toString());
         }
+
         log.info(response.toString());
         return response;
     }

@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author: Tomas TJ Martinez
@@ -45,9 +47,8 @@ public class GeoCacheControllerRead {
      */
     @RequestMapping(value = "/my-geocaches/{gifter}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GeoCache> readMyGeoCaches(@PathVariable String gifter){
-        ObjectId gifterID = new ObjectId(gifter);
-        List<GeoCache> results = geoCacheRepo.findAllByGifter(gifterID);
-        log.debug("reading all geocaches for gifter" + gifter); //get session or current user
+        List<GeoCache> results = geoCacheRepo.findAllByGifter(gifter);
+        log.info("reading all geocaches for gifter" + gifter); //get session or current user
         return results;
     }
 
