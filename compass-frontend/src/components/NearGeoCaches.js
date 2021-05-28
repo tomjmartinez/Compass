@@ -74,7 +74,6 @@ class NearGeoCaches extends Component{
             <div>
                 <p>Select marker then hit checkout to select which marker to find</p>
                 <MapComponent geoCaches={testing} />
-                {/* <GeoCachesCheckout geoCaches={nearGeoCaches} geoids={this.state.geoids}/> */}
             </div>
         )
     }

@@ -13,6 +13,7 @@ const mapStyles = {
 
 class MapComponent extends Component {
   constructor(props) {
+    console.log(props)
     super(props);
     this.state = {
       currentLat: 34,
@@ -93,6 +94,7 @@ class MapComponent extends Component {
       return;
     }
     const newMarkers = [];
+    console.log(this.state.testMarkers);
     this.state.testMarkers.forEach((marker) => (
       newMarkers.push({
         id: marker.id,
@@ -122,7 +124,7 @@ class MapComponent extends Component {
     }
     return (
       <div>
-      <button onClick={this.handleCheckout.bind(this)} value={this.state.activeMarker == null ? "" : this.state.activeMarker.id}>Checkout</button>
+      {this.props.geoCaches.handleCheckout ? <button onClick={this.handleCheckout.bind(this)} value={this.state.activeMarker == null ? "" : this.state.activeMarker.id}>Checkout</button> : ""}
       <Map
         google={this.props.google}
         zoom={12}
