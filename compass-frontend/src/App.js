@@ -16,6 +16,14 @@ import MapComponent from "./components/MapComponent";
 
 class App extends React.Component{
 
+  constructor() {
+    super()
+    this.state = {
+      lng: 0,
+      lat: 0
+    }
+  }
+
   render() {
     return(
         <div className={"App"}>

@@ -36,7 +36,7 @@ class AvailGeoCaches extends Component{
                 console.log(res.data)
                 if(res.data){
                     axios.post('http://localhost:8000/my-app/api/user/seeking/' + localStorage.getItem('username'),
-                    checkout.checkingOut, config).then(result => console.log(result.data)
+                    checkout.checkingOut, config).then(result => localStorage.setItem('seeking', result.data.seeking)
                 )
                 }
             })

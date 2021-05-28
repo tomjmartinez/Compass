@@ -40,7 +40,7 @@ public class GeoCacheControllerAdd {
      * @throws JSONException
      */
 
-@PostMapping(value="/newGeoCache")
+    @PostMapping(value="/newGeoCache")
     public GeoCache createGeoCache(@RequestBody String json) throws URISyntaxException, JsonProcessingException, JSONException {
         log.info("Creating a new geocache with: " + json);
         ObjectMapper objectMapper = new ObjectMapper();

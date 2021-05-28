@@ -10,13 +10,35 @@ class HomeComponent extends React.Component {
     constructor(props) {
         super(props);
         this.handleChangePath = this.handleChangePath.bind(this);
+        this.state = {
+            lng: 0,
+            lat: 0
+        }
     }
     handleChangePath(path){
         this.props.history.push(path);
     }
 
+    currentLocation(){
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+              this.setState(previousState => {
+                return {
+                  lng: position.coords.latitude,
+                  lat: position.coords.longitude,
+                };
+              });
+            });
+          }
+    }
+
+    componentDidMount(){
+        this.currentLocation();
+    }
+
 
     render() {
+        this.currentLocation();
         return(
             <Container className={"homePage"}>
                 <Row>

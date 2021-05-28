@@ -33,9 +33,7 @@ class CreateGeoCacheComponent extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-
-
-  componentDidMount() {
+  currentLocation(){
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.setState(previousState => {
@@ -46,22 +44,10 @@ class CreateGeoCacheComponent extends Component {
         });
       });
     }
+  }
 
-    const interval = setInterval(() => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          if(position.coords.latitude != this.state.currentLat || position.coords.longitude != this.state.currentLng) {
-            this.setState(previousState => {
-              return {
-                currentLat: position.coords.latitude,
-                currentLng: position.coords.longitude
-              };
-            });
-          }
-        });
-      }
-      return;
-    }, 60000)
+  componentDidMount() {
+    this.currentLocation();
   }
 
   onClick(t, map, coord) {
@@ -134,6 +120,7 @@ class CreateGeoCacheComponent extends Component {
   }
 
   render() {
+    this.currentLocation();
     if(localStorage.getItem('user' == undefined)) {
       this.props.history.push("/login")
     }
