@@ -44,8 +44,7 @@ class SecureLogin  extends React.Component{
                 password: this.state.password
             }, config)
             .then(res => {
-                (res.data.successful)?
-                addStorage(res.data.user.username, res.data.user.password, res.data.userID): //try/catch needed
+                addStorage(res.data.user.username, res.data.user.password, res.data.userId); //try/catch needed
                 this.handleInvalidLogin();
                 this.handleNextPath("/home");
             })
