@@ -18,7 +18,7 @@ class AllGeoCaches extends Component{
     }
 
     handleCheckout(event){
-        console.log(event.target.value)
+
         event.preventDefault();
         const config = {
             headers: {
@@ -34,13 +34,18 @@ class AllGeoCaches extends Component{
 
         axios.post(`http://localhost:8000/my-app/api/checkout-geocache`, checkout, config )
             .then(res => {
-                console.log(res.data)
+
                 if(res.data){
                     axios.post('http://localhost:8000/my-app/api/user/seeking/' + localStorage.getItem('username'),
-                    checkout.checkingOut, config).then(result => console.log(result.data)
+                    checkout.checkingOut, config).then(result => localStorage.setItem('seeking', result.data.seeking)
                 )
                 }
             })
+    }
+
+    handleNextPath(path){
+
+        this.props.history.push(path);
     }
 
     componentDidMount(){
@@ -69,6 +74,8 @@ class AllGeoCaches extends Component{
         const testing = {caches: this.state.test, handleCheckout: this.handleCheckout}
         return (
             <div>
+                <h4>Viewing All Geo Caches</h4>
+                <button onClick={()=>this.handleNextPath("/home")}>Go Back Home</button>
                 <p>Select marker then hit checkout to select which marker to find</p>
                 <MapComponent geoCaches={testing} />
                 {/* <GeoCachesCheckout geoCaches={allGeoCaches} geoids={this.state.geoids}/> */}

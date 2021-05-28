@@ -53,6 +53,19 @@ public class GeoCacheControllerRead {
     }
 
     /**
+     * serves a single geocache by passed id in database
+     * @param id represents a single geocache id
+     * @return List of all geocaches created by user
+     */
+    @RequestMapping(value = "/geocache/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public GeoCache getGeoCache(@PathVariable String id){
+        System.out.println(id);
+        GeoCache result = geoCacheRepo.findById(new ObjectId(id)).orElse(null);
+        log.debug("got a single geocache: " + result); //get session or current user
+        return result;
+    }
+
+    /**
      * function serves all geocaches in database
      * @return Map represenation of geocache and their id
      */
@@ -103,10 +116,12 @@ public class GeoCacheControllerRead {
     @RequestMapping(method = RequestMethod.POST,value = "/near-geocaches",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GeoCache> readNearGeoCaches(@RequestBody Map obj){
+        System.out.println(obj.toString());
         double lon = (double) obj.get("lon");
         double lat = (double) obj.get("lat");
         List<GeoCache> nearGeos = geoCacheRepo.findNear(lon, lat);
 
+        System.out.println(nearGeos);
         log.debug("populating nearby geocaches from " + lon + " " + lat);
         return nearGeos;
     }

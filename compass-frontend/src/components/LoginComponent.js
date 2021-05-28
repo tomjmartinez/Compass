@@ -37,7 +37,7 @@ class LoginComponent  extends React.Component{
             .then(res => {
 
                 addStorage(res.data.user.username, res.data.user.password, res.data.id)
-                console.log(res.data);
+
             });
     }
     handleNextPath(path){

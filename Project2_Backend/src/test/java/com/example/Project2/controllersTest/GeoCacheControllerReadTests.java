@@ -4,28 +4,11 @@ import com.example.Project2.models.GeoCache;
 import com.example.Project2.repos.GeoCacheRepo;
 import org.bson.types.ObjectId;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-//import static org.mockito.Mockito.*;
+import org.mockito.*;
 
 import com.example.Project2.controllers.GeoCacheControllerRead;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +20,17 @@ public class GeoCacheControllerReadTests {
     private GeoCacheRepo geoCacheRepo = Mockito.mock(GeoCacheRepo.class);
 
     private GeoCacheControllerRead geoController = new GeoCacheControllerRead(geoCacheRepo);
+
+    @Test
+    public void testGetOne() {
+        GeoCache geo1 = new GeoCache();
+        ObjectId geoid1 = new ObjectId("60aaba9c761ccc0d2edc42e9");
+        geo1.setId(geoid1);
+        geo1.setDescription("test");
+        Mockito.when(geoCacheRepo.findById(geoid1.toString())).thenReturn(geo1);
+        GeoCache test = geoController.getGeoCache(geoid1.toString());
+        Assert.assertEquals(test.getDescription(), geo1.getDescription());
+    }
 
     @Test
     public void testAllGeos() {
