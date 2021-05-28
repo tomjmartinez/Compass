@@ -107,7 +107,7 @@ public class GeoCacheControllerReadTests {
     }
 
     @Test
-    public void readNearGeoCaches(){
+    public void readNearGeoCachesTest(){
         GeoCache geo1 = new GeoCache();
         ObjectId geoid1 = new ObjectId("60aaba9c761ccc0d2edc42e9");
         geo1.setId(geoid1);
@@ -115,23 +115,43 @@ public class GeoCacheControllerReadTests {
         ArrayList<GeoCache> mockGeoList = new ArrayList<GeoCache>();
         mockGeoList.add(geo1);
 
-        Map coords = new HashMap();
-        coords.put("lon",1);
-        coords.put("lat", 1);
-
         Mockito.when(
-                geoCacheRepo.findNear(1, 1).thenReturn(mockGeoList);
+                geoCacheRepo.findNear(1, 1)).thenReturn(mockGeoList);
 
         List expected = new ArrayList<>();
         expected.add(geo1);
 
-        Map mapFound = geoController.readNearCaches(coords);
+
+        Map coords = new HashMap();
+        coords.put("lon",1d);
+        coords.put("lat", 1d);
+
+        List<GeoCache> mapFound = geoController.readNearGeoCaches(coords);
 
         Assert.assertEquals("not valid", expected.toString(), mapFound.toString());
     }
 
     @Test
     public void updateGeoCachesTest(){
+        Map obj = new HashMap();
+        obj.put("checkingOut", "60aaba9c761ccc0d2edc42e9");
+        obj.put("currentUser", "user");
+
+        GeoCache geo1 = new GeoCache();
+        ObjectId geoid1 = new ObjectId("60aaba9c761ccc0d2edc42e4");
+
+
+        Mockito.when(
+                geoCacheRepo.findByFinder("user")).thenReturn(null);
+
+        Mockito.when(
+                geoCacheRepo.findById("60aaba9c761ccc0d2edc42e9")).thenReturn(geo1);
+
+        String result = geoController.updateGeoCaches(obj);
+
+        String expected = "60aaba9c761ccc0d2edc42e9";
+
+        Assert.assertEquals("failed test", expected, result);
 
     }
 }
