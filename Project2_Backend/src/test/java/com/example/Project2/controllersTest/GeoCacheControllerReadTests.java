@@ -72,7 +72,7 @@ public class GeoCacheControllerReadTests {
         mockGeoList.add(geo1);
 
         Mockito.when(
-                geoCacheRepo.findAllByGifter(geo1.getId())).thenReturn(mockGeoList);
+                geoCacheRepo.findAllByGifter("60aaba9c761ccc0d2edc42e9")).thenReturn(mockGeoList);
 
         List expected = new ArrayList<>();
         expected.add(geo1);
