@@ -141,9 +141,11 @@ public class GeoCacheControllerReadTests {
         ObjectId geoid1 = new ObjectId("60aaba9c761ccc0d2edc42e4");
 
 
-        Mockito.when(geoCacheRepo.findByFinder("user")).thenReturn(null);
+        Mockito.when(
+                geoCacheRepo.findByFinder("user")).thenReturn(null);
 
-        Mockito.when(geoCacheRepo.findById("60aaba9c761ccc0d2edc42e9")).thenReturn(geo1);
+        Mockito.when(
+                geoCacheRepo.findById("60aaba9c761ccc0d2edc42e9")).thenReturn(geo1);
 
         String result = geoController.updateGeoCaches(obj);
 

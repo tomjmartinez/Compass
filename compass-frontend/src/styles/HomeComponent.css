@@ -1,0 +1,24 @@
+.homePage{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.homeItem{
+    flex-grow: 1;
+    display: inherit;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background-color: white;
+    font-size: 20px;
+}
+
+
+
+
+.mapWindow{
+    width: 40vw;
+    height: 40vh;
+    display: inherit;
+    margin: 10px 20px;
+}

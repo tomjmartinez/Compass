@@ -33,6 +33,8 @@ class CreateGeoCacheComponent extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+
+
   componentDidMount() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {

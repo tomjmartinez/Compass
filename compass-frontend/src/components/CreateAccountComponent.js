@@ -84,7 +84,7 @@ class CreateAccountComponent extends React.Component{
                     </Col>
                 </Row>
                 </Form>
-                        <Button id={"btn-login"} onClick={()=>this.handleNextPath('/login')} >Login</Button>
+                        <Button id={"btn-login"} onClick={()=>this.handleNextPath('/secure-login')} >Login</Button>
             </Container>
         );
     }
