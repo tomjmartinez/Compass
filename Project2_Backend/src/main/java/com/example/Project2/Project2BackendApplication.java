@@ -16,18 +16,18 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class Project2BackendApplication {
+	public static final Logger logger = (Logger) LogManager.getLogger(Project2BackendApplication.class.getName());
+	public static final Logger rootLogger = (Logger) LogManager.getRootLogger();
 
 	private GeoCacheRepo geoCacheRepo;
-	private DatabaseLoader databaseLoader;
 	private UserRepo userRepo;
 
 	@Autowired
-	public Project2BackendApplication(UserRepo userRepo) {
-		this.userRepo = userRepo;
-	}
+	public Project2BackendApplication(UserRepo userRepo) {this.userRepo = userRepo;}
 
 	public static void main(String[] args) {
 		SpringApplication.run(Project2BackendApplication.class, args);
+		logger.info("Application starting");
 	}
 
 	@Bean
