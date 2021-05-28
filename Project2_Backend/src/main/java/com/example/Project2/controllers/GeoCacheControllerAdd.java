@@ -1,19 +1,17 @@
 package com.example.Project2.controllers;
-
+/**
+ * Represents the GeoController Class
+ */
+import org.springframework.web.bind.annotation.*;
 import com.example.Project2.models.*;
 import com.example.Project2.repos.GeoCacheRepo;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
-import com.google.gson.*;
-import com.mongodb.client.model.geojson.*;
-import org.bson.types.ObjectId;
 import org.json.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.geo.*;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
 
 import java.net.*;
 import java.util.*;
@@ -24,6 +22,9 @@ import java.util.*;
 public class GeoCacheControllerAdd {
     private final Logger log = LoggerFactory.getLogger(GeoCacheControllerAdd.class);
 
+    /**
+     * @param geoCacheRepo The GeoCacheRepo being used
+     */
     public GeoCacheControllerAdd(GeoCacheRepo geoCacheRepo){
         this.geoCacheRepo = geoCacheRepo;
     }
@@ -31,10 +32,17 @@ public class GeoCacheControllerAdd {
     @Autowired
     private GeoCacheRepo geoCacheRepo;// = null;
 
-    @PostMapping(value="/newGeoCache")
+    /**
+     * @param json The input string.  Contains a description, a double array of 2 coordinates, a long time limit and a gifter object id in the form of a string
+     * @return The new GeoCache
+     * @throws URISyntaxException
+     * @throws JsonProcessingException
+     * @throws JSONException
+     */
+
+@PostMapping(value="/newGeoCache")
     public GeoCache createGeoCache(@RequestBody String json) throws URISyntaxException, JsonProcessingException, JSONException {
-        System.out.println(json);
-        Gson gson = new Gson();
+        log.info("Creating a new geocache with: " + json);
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> map = objectMapper.readValue(json, HashMap.class);
 

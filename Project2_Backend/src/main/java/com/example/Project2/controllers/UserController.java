@@ -1,16 +1,17 @@
 package com.example.Project2.controllers;
+
+/**
+ * Represents the User Controller
+ */
+
 import com.example.Project2.models.User;
 import com.example.Project2.repos.UserRepo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
@@ -21,10 +22,17 @@ public class UserController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserRepo userRepo;
 
+    /**
+     * @param userRepo Sets up the UserRepo
+     */
     public UserController(UserRepo userRepo){
         this.userRepo = userRepo;
     }
 
+    /**
+     * @param username The username that is being looked up
+     * @return A map that contains the user and its id as a string
+     */
     @RequestMapping(method = RequestMethod.GET,value = "/users/{username}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Map getUser(@PathVariable String username){
@@ -36,6 +44,10 @@ public class UserController {
         return response;
     }
 
+    /**
+     * @param obj The username and password for logging in
+     * @return A map of if the login is successful, and if it is, the user and userID in a string
+     */
     @RequestMapping(method = RequestMethod.POST,value = "/secure-login",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Map loginSecure(@RequestBody Map obj){
@@ -56,6 +68,12 @@ public class UserController {
         return response;
     }
 
+    /**
+     * @param json The username and password in a json string
+     * @return The new user
+     * @throws URISyntaxException
+     * @throws JsonProcessingException
+     */
     @PostMapping(value="/user")
     public User createUser(@RequestBody String json) throws URISyntaxException, JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -65,6 +83,11 @@ public class UserController {
         return result;
     }
 
+    /**
+     * @param username The user that is updating which geocache they are looking for
+     * @param json The string of the geoCache id that the user is now looking for
+     * @return A map containing the user seeking string - which is the geocache id
+     */
     @CrossOrigin("http://localhost:3000/create-geocache")
     @RequestMapping(method = RequestMethod.POST, value = "/user/seeking/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map updateSeeking(@PathVariable String username, @RequestBody String json) {
