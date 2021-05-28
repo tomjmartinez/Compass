@@ -24,11 +24,15 @@ import java.util.*;
 public class GeoCacheControllerAdd {
     private final Logger log = LoggerFactory.getLogger(GeoCacheControllerAdd.class);
 
+    public GeoCacheControllerAdd(GeoCacheRepo geoCacheRepo){
+        this.geoCacheRepo = geoCacheRepo;
+    }
+
     @Autowired
     private GeoCacheRepo geoCacheRepo;// = null;
 
     @PostMapping(value="/newGeoCache")
-    public ResponseEntity<String> createGeoCache(@RequestBody String json) throws URISyntaxException, JsonProcessingException, JSONException {
+    public GeoCache createGeoCache(@RequestBody String json) throws URISyntaxException, JsonProcessingException, JSONException {
         System.out.println(json);
         Gson gson = new Gson();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -44,8 +48,6 @@ public class GeoCacheControllerAdd {
         newCache.setGifter(map.get("gifter").toString());
 
         GeoCache result = geoCacheRepo.save(newCache);
-        System.out.println(result);
-        return ResponseEntity.created(new URI("api/geoCache" + result.getId().toString()))
-                .body(result.getId().toString());
+        return result;
     }
 }

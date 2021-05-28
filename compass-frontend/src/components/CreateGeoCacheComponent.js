@@ -113,8 +113,7 @@ class CreateGeoCacheComponent extends Component {
         gifter: localStorage.getItem('currentUser')
       }
       axios.post(`http://localhost:8000/my-app/api/newGeoCache`, form, config ).then(res => {
-      // axios.post('http://localhost:8000/my-app/api/user/seeking/' + localStorage.getItem('username'),
-      // res.data, config).then(result => console.log(result.data))
+        console.log(res.data);
     })
   }
 
@@ -124,30 +123,21 @@ class CreateGeoCacheComponent extends Component {
 
   handleDescriptionChange(event){
       this.setState({description: event.target.value});
+      console.log(this.state.description)
   }
 
   handleTimeChange(event){
       this.setState({timeLimit: event.target.value});
+      console.log(this.state.timeLimit)
   }
 
   render() {
     if(localStorage.getItem('user' == undefined)) {
       this.props.history.push("/login")
     }
+    console.log(this.state)
     return (
       <Container>
-        <Map
-          google={this.props.google}
-          zoom={12}
-          className={"map"}
-          center={{ lat: this.state.currentLat, lng: this.state.currentLng }}
-          style={mapStyles}
-          onClick={this.onClick}
-        >
-        <Marker title="Current Location" name="Current Location" position={{lat: this.state.currentLat, lng: this.state.currentLng}} onClick={this.onMarkerClick}/>
-        <Marker title="New GeoCache Location" name="New Geocache Location" position={{lat: this.state.newLat, lng: this.state.newLng}} onClick={this.onMarkerClick}/>
-        <InfoWindow marker={this.state.activeMarker} visible={this.state.showingInfoWindow}onClose={this.onClose} >
-        {this.state.selectedPlace.title == "Current Location" ? <div><h4>Current Location</h4></div> :
         <Form onSubmit={this.handleSubmit}>
             <h1>
                 <span className={"font-weight-bold"}>Add new GeoCache</span>
@@ -181,7 +171,19 @@ class CreateGeoCacheComponent extends Component {
                     <Button variant="success" >Submit</Button>
                 </Col>
             </Row>
-        </Form> }
+        </Form>
+        <Map
+          google={this.props.google}
+          zoom={12}
+          className={"map"}
+          center={{ lat: this.state.currentLat, lng: this.state.currentLng }}
+          style={mapStyles}
+          onClick={this.onClick}
+        >
+        <Marker title="Current Location" name="Current Location" position={{lat: this.state.currentLat, lng: this.state.currentLng}} onClick={this.onMarkerClick}/>
+        <Marker title="New GeoCache Location" name="New Geocache Location" position={{lat: this.state.newLat, lng: this.state.newLng}} onClick={this.onMarkerClick}/>
+        <InfoWindow marker={this.state.activeMarker} visible={this.state.showingInfoWindow}onClose={this.onClose} >
+        {this.state.selectedPlace.title == "Current Location" ? <div><h4>Current Location</h4></div> : <div><h4>Create new location above</h4></div>}
         </InfoWindow>
         </Map>
       </Container>

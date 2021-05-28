@@ -25,30 +25,21 @@ public class UserController {
         this.userRepo = userRepo;
     }
 
-    /*@GetMapping(value = "users",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getAllUsers(){
-        return ResponseEntity.ok("No Users");
-    }
-    */
-    //@CrossOrigin("http://localhost:3000/login")
     @RequestMapping(method = RequestMethod.GET,value = "/users/{username}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Map getUser(@PathVariable String username){
-        System.out.println("inside getUser...");
+        log.info("inside getUser...");
         User user = userRepo.findByUsername(username);
         Map response = new HashMap();
-        response.put("user", user); //.toString()
+        response.put("user", user);
         response.put("userID",user.getId().toString());
-        List userAndID = new ArrayList();
         return response;
     }
-
 
     @RequestMapping(method = RequestMethod.POST,value = "/secure-login",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Map loginSecure(@RequestBody Map obj){
-        System.out.println("inside getUser...");
-        System.out.println(obj.toString());
+        log.info("inside getUser..." + obj.toString());
         String username = (String) obj.get("username");
         String password = (String) obj.get("password");
         User user = userRepo.findByUsernameAndPassword(username, password);
@@ -60,33 +51,29 @@ public class UserController {
             response = new HashMap();
             response.put("user", user); //.toString()
             response.put("userID", user.getId().toString());
-            List userAndID = new ArrayList();
         }
-        System.out.println(response.toString());
+        log.info(response.toString());
         return response;
     }
 
-
     @PostMapping(value="/user")
-    ResponseEntity<User> createUser(@RequestBody String json) throws URISyntaxException, JsonProcessingException {
+    public User createUser(@RequestBody String json) throws URISyntaxException, JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         User newUser = objectMapper.readValue(json, User.class);
         User result = userRepo.save(newUser);
-        System.out.println(result);
-        return ResponseEntity.created(new URI("api/user" + result.getUsername()))
-                .body(result);
+        log.info("New User: " + result);
+        return result;
     }
 
     @CrossOrigin("http://localhost:3000/create-geocache")
     @RequestMapping(method = RequestMethod.POST, value = "/user/seeking/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map updateSeeking(@PathVariable String username, @RequestBody String json) {
-        System.out.println("------------------");
         User found = userRepo.findByUsername(username);
         found.setSeeking(json);
-        System.out.println(found.getSeeking());
         User result = userRepo.save(found);
         Map response = new HashMap();
         response.put("seeking", result.getSeeking());
+        log.info("Now seeking: " + result.getSeeking());
         return response;
     }
 }
