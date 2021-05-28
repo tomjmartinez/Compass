@@ -1,12 +1,13 @@
 package com.example.Project2.controllers;
 
+import com.example.Project2.Project2BackendApplication;
 import com.example.Project2.models.GeoCache;
 import com.example.Project2.models.User;
 import com.example.Project2.repos.GeoCacheRepo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -19,11 +20,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author: Tomas TJ Martinez
+ * Class represents all the endpoints that the application listens to
+ * in order to serve incoming http geocache requests
+ */
 @RestController
 @RequestMapping("api/")
 @CrossOrigin(origins = "*")
 public class GeoCacheControllerRead {
-    private final Logger log = LoggerFactory.getLogger(GeoCacheControllerRead.class);
+    public static final Logger log = LogManager.getLogger(GeoCacheControllerRead.class.getName());
 
     public GeoCacheControllerRead(GeoCacheRepo geoCacheRepo){
         this.geoCacheRepo = geoCacheRepo;
@@ -32,6 +38,11 @@ public class GeoCacheControllerRead {
     @Autowired
     private GeoCacheRepo geoCacheRepo;// = null;
 
+    /**
+     * serves all geocaches created by passed in user in database
+     * @param gifter represents creator of geocaches
+     * @return List of all geocaches created by user
+     */
     @RequestMapping(value = "/my-geocaches/{gifter}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GeoCache> readMyGeoCaches(@PathVariable String gifter){
         ObjectId gifterID = new ObjectId(gifter);
@@ -40,6 +51,10 @@ public class GeoCacheControllerRead {
         return results;
     }
 
+    /**
+     * function serves all geocaches in database
+     * @return Map represenation of geocache and their id
+     */
     @RequestMapping(value = "/all-geocaches", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map readAllGeoCaches(){
         ArrayList<GeoCache> results = (ArrayList<GeoCache>) geoCacheRepo.findAll();
@@ -54,9 +69,15 @@ public class GeoCacheControllerRead {
         listPack.put("geoids", resultIds);
 
         log.debug("reading all geocaches."); //get session or current user
+        log.info("read all geocaches in database");
+        Project2BackendApplication.rootLogger.info("read all geos");
         return listPack;
     }
 
+    /**
+     * function serves all geocaches available in database
+     * @return Map representation: list of available geocaches and list of their ids strings
+     */
     @RequestMapping(value = "/avail-geocaches", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map readAvailableGeoCaches(){
         List<GeoCache> avail = geoCacheRepo.findAvail();
@@ -73,6 +94,11 @@ public class GeoCacheControllerRead {
         return listPack;
     }
 
+    /**
+     * serves a list of all geocaches near passed longitude and latitude points
+     * @param obj Map contains longitude and latitude points
+     * @return All geocaches in db in order from nearest to furthest
+     */
     @RequestMapping(method = RequestMethod.POST,value = "/near-geocaches",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GeoCache> readNearGeoCaches(@RequestBody Map obj){
@@ -84,6 +110,13 @@ public class GeoCacheControllerRead {
         return nearGeos;
     }
 
+    /**
+     * checks-out a geocache for a user and replaces
+     * @param obj Map: string id of geocache checking out and
+     * string username of user checking it out
+     * @return String false if couldn't update geocache or String with id of geocache
+     * updated in the database
+     */
     @RequestMapping(method = RequestMethod.POST,value = "/checkout-geocache", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public String updateGeoCaches(@RequestBody Map obj){
