@@ -49,6 +49,9 @@ class HomeComponent extends React.Component {
                     </Col>
                 </Row>
                 <Row>
+                    <Button className={"btn-view-caches"} onClick={()=>this.handleChangePath('/my-geocaches')}> My Caches</Button>
+                </Row>
+                <Row>
                     <Button className={"btn-view-caches"} onClick={()=>this.handleChangePath('/avail-geocaches')}> View Caches</Button>
                 </Row>
                 <Row>
