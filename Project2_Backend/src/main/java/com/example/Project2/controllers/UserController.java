@@ -62,7 +62,6 @@ public class UserController {
             response.put("userID", user.getId().toString());
             List userAndID = new ArrayList();
         }
-        System.out.println(response.toString());
         return response;
     }
 
