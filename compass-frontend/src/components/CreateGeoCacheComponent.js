@@ -33,6 +33,8 @@ class CreateGeoCacheComponent extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+
+
   componentDidMount() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -136,6 +138,7 @@ class CreateGeoCacheComponent extends Component {
     }
     return (
       <Container>
+        <Button className={"btn-go-back"} onClick={()=> this.handleNextPath("/home")}> Go Back Home</Button>
         <Map
           google={this.props.google}
           zoom={12}
