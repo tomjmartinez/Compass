@@ -17,8 +17,13 @@ class NearGeoCaches extends Component{
         }
     }
 
+    handleNextPath(path){
+
+        this.props.history.push(path);
+    }
+
     handleCheckout(event){
-        console.log(event.target.value)
+
         event.preventDefault();
         const config = {
             headers: {
@@ -34,7 +39,7 @@ class NearGeoCaches extends Component{
 
         axios.post(`http://localhost:8000/my-app/api/checkout-geocache`, checkout, config )
             .then(res => {
-                console.log(res.data)
+
                 if(res.data){
                     axios.post('http://localhost:8000/my-app/api/user/seeking/' + localStorage.getItem('username'),
                     checkout.checkingOut, config).then(result => localStorage.setItem('seeking', result.data.seeking)
@@ -72,7 +77,9 @@ class NearGeoCaches extends Component{
         const testing = {caches: this.state.test, handleCheckout: this.handleCheckout}
         return (
             <div>
+                <h4>Nearby Geo Caches</h4>
                 <p>Select marker then hit checkout to select which marker to find</p>
+                <button onClick={()=>this.handleNextPath("/home")}>Go Back Home</button>
                 <MapComponent geoCaches={testing} />
             </div>
         )

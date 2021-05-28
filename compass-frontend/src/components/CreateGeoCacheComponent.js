@@ -101,7 +101,7 @@ class CreateGeoCacheComponent extends Component {
         gifter: localStorage.getItem('currentUser')
       }
       axios.post(`http://localhost:8000/my-app/api/newGeoCache`, form, config ).then(res => {
-        console.log(res.data);
+
     })
   }
 
@@ -111,20 +111,20 @@ class CreateGeoCacheComponent extends Component {
 
   handleDescriptionChange(event){
       this.setState({description: event.target.value});
-      console.log(this.state.description)
-  }
+
+    }
 
   handleTimeChange(event){
       this.setState({timeLimit: event.target.value});
-      console.log(this.state.timeLimit)
-  }
+
+    }
 
   render() {
     this.currentLocation();
     if(localStorage.getItem('user' == undefined)) {
       this.props.history.push("/login")
     }
-    console.log(this.state)
+
     return (
       <Container>
         <Form onSubmit={this.handleSubmit}>
@@ -161,6 +161,7 @@ class CreateGeoCacheComponent extends Component {
                 </Col>
             </Row>
         </Form>
+        <button onClick={()=>this.handleNextPath("/home")}>Go Back Home</button>
         <Map
           google={this.props.google}
           zoom={12}

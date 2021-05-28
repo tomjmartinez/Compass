@@ -2,9 +2,7 @@ import React from "react";
 import {Button, Col, Container, Row} from "reactstrap";
 import "../styles/HomeComponent.css";
 import {withRouter} from "react-router-dom";
-import MapComponent from "./MapComponent";
 import MyGeoCaches from "./MyGeoCaches";
-import GeoCachesTable from "./GeoCachesTable";
 
 class HomeComponent extends React.Component {
     constructor(props) {
@@ -55,9 +53,7 @@ class HomeComponent extends React.Component {
                     <Button className={"btn-view-caches"} onClick={()=>this.handleChangePath('/avail-geocaches')}> View Caches</Button>
                 </Row>
                 <Row>
-                    <Button className={"btn-add-caches"} onClick={()=>this.handleChangePath('/create-geocaches')}>
-                        Add Cache
-                    </Button>
+                    <Button className={"btn-add-caches"} onClick={()=>this.handleChangePath('/create-geocaches')}>Add Cache</Button>
                 </Row>
                 <Row>
                     <Button className={"btn-near-caches"} onClick={()=>this.handleChangePath('/near-geocaches')}> View Near Caches</Button>
@@ -65,7 +61,7 @@ class HomeComponent extends React.Component {
                 <Row>
                     <Col>
                         <div className={"mapWindow"}>
-                            <MapComponent/>
+                            <MyGeoCaches/>
                         </div>
                     </Col>
                 </Row>

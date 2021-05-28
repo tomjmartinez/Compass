@@ -13,7 +13,7 @@ const mapStyles = {
 
 class MapComponent extends Component {
   constructor(props) {
-    console.log(props)
+
     super(props);
     this.state = {
       currentLat: 34,
@@ -21,6 +21,16 @@ class MapComponent extends Component {
       selectedPlace: props,
       activeMarker: props,
       showingInfoWindow: true,
+      currentLocation: {
+        title: "",
+        name: "",
+        position: {lat: "", lng: ""}
+      },
+      seeking: {
+        title: "",
+        name: "",
+        position: {lat: "", lng: ""}
+      },
       markers: [],
       testMarkers: this.props.geoCaches ? this.props.geoCaches.caches : []
     };
@@ -33,14 +43,11 @@ class MapComponent extends Component {
           return {
             currentLat: position.coords.latitude,
             currentLng: position.coords.longitude,
-            markers: [
-              ...previousState.markers,
-              {
-                title: "Current Location",
-                name: "Current Location",
-                position: { lat: position.coords.latitude, lng: position.coords.longitude }
-              }
-            ]
+            currentLocation: {
+              title: "Current Location",
+              name: "Current Location",
+              position: { lat: position.coords.latitude, lng: position.coords.longitude }
+            }
           };
         });
       });
@@ -54,7 +61,20 @@ class MapComponent extends Component {
           'Content-Type': 'application/json'
       }
     }
-    axios.get("http://localhost:8000/my-app/api/geocache/" + localStorage.getItem("seeking"), config).then(response => {console.log(response.data)})
+    axios.get("http://localhost:8000/my-app/api/geocache/" + localStorage.getItem("seeking"), config)
+    .then(response => {
+
+      this.setState(previousState => {
+        return {
+          seeking: {
+            title: response.data.description,
+            name: response.data.description,
+            position: { lat: response.data.location.y, lng: response.data.location.x}
+          }
+        };
+      });
+      
+      })
   }
 
   componentDidMount() {
@@ -63,7 +83,7 @@ class MapComponent extends Component {
   }
 
   handleCheckout = (event) =>{
-    console.log(event)
+
     this.props.geoCaches.handleCheckout(event);
   }
 
@@ -94,7 +114,7 @@ class MapComponent extends Component {
       return;
     }
     const newMarkers = [];
-    console.log(this.state.testMarkers);
+
     this.state.testMarkers.forEach((marker) => (
       newMarkers.push({
         id: marker.id,
@@ -132,6 +152,21 @@ class MapComponent extends Component {
         center={{ lat: this.state.currentLat, lng: this.state.currentLng }}
         style={mapStyles}
       >
+        <Marker
+          title={this.state.currentLocation.title}
+          name={this.state.currentLocation.name}
+          position={this.state.currentLocation.position}
+          onClick={this.onMarkerClick}
+        />
+        <Marker
+          title={this.state.seeking.title}
+          name={this.state.seeking.name}
+          position={this.state.seeking.position}
+          icon={
+            {url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"}
+          }
+          onClick={this.onMarkerClick}
+        />
         {this.state.markers.map((marker) => (
             <Marker
               id={marker.id}

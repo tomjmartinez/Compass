@@ -15,6 +15,11 @@ class MyGeoCaches extends Component{
         }
     }
 
+    handleNextPath(path){
+
+        this.props.history.push(path);
+    }
+
     componentDidMount(){
         axios.get("http://localhost:8000/my-app/api/my-geocaches/" + localStorage.getItem("currentUser"))
             .then(response =>{
@@ -36,11 +41,12 @@ class MyGeoCaches extends Component{
     }
 
     render(){
-        console.log(this.state)
+
         const caches = {caches: this.state.test}
         return (
             <div>
                 <h2 className={"homeItem"}>My GeoCaches</h2>
+                <button onClick={()=>this.handleNextPath("/home")}>Go Back Home</button>
                 <MapComponent geoCaches={caches} />
             </div>
         )
