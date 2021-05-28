@@ -42,6 +42,10 @@ class AvailGeoCaches extends Component{
             })
     }
 
+    handleNextPath(path){
+        this.props.history.push(path);
+    }
+
     componentDidMount(){
         axios.get("http://localhost:8000/my-app/api/avail-geocaches")
             .then(response =>{
@@ -70,6 +74,7 @@ class AvailGeoCaches extends Component{
         const testing = {caches: this.state.test, handleCheckout: this.handleCheckout}
         return (
             <div>
+                <button onClick={()=>this.handleNextPath("/home")}>Go Back Home</button>
                 <MapComponent geoCaches={testing} />
                 {/*<GeoCachesCheckout geoCaches={availGeoCaches} geoids={this.state.geoids/>*/}
             </div>
