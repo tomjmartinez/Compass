@@ -50,13 +50,16 @@ class HomeComponent extends React.Component {
                     <Button className={"btn-view-caches"} onClick={()=>this.handleChangePath('/my-geocaches')}> My Caches</Button>
                 </Row>
                 <Row>
-                    <Button className={"btn-view-caches"} onClick={()=>this.handleChangePath('/avail-geocaches')}> View Caches</Button>
+                    <Button className={"btn-view-caches"} onClick={()=>this.handleChangePath('/avail-geocaches')}> View Available Caches</Button>
                 </Row>
                 <Row>
                     <Button className={"btn-add-caches"} onClick={()=>this.handleChangePath('/create-geocaches')}>Add Cache</Button>
                 </Row>
                 <Row>
                     <Button className={"btn-near-caches"} onClick={()=>this.handleChangePath('/near-geocaches')}> View Near Caches</Button>
+                </Row>
+                <Row>
+                    <Button className={"btn-view-caches"} onClick={()=>this.handleChangePath('/all-geocaches')}> All Caches</Button>
                 </Row>
                 <Row>
                     <Col>

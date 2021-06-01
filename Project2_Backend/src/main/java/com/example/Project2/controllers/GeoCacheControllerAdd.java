@@ -1,6 +1,7 @@
 package com.example.Project2.controllers;
 /**
  * Represents the GeoController Class
+ * @author Kevin Altieri
  */
 import org.springframework.web.bind.annotation.*;
 import com.example.Project2.models.*;

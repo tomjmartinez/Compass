@@ -21,8 +21,17 @@ class MyGeoCaches extends Component{
     }
 
     componentDidMount(){
-        axios.get("http://localhost:8000/my-app/api/my-geocaches/" + localStorage.getItem("currentUser"))
+
+        const config = {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            }
+          }
+
+        axios.get("http://localhost:8000/my-app/api/my-geocaches/" + localStorage.getItem("currentUser"), config)
             .then(response =>{
+                console.log(response.data);
                 this.setState({myGeoCaches: response.data})
                 for(let i = 0; i < this.state.myGeoCaches.length; i++){
                     this.setState(previousState => {

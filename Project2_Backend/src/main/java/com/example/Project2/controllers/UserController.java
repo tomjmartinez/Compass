@@ -2,6 +2,7 @@ package com.example.Project2.controllers;
 
 /**
  * Represents the User Controller
+ * @Author Emanuel Garcia
  */
 
 import com.example.Project2.models.User;
